@@ -13,7 +13,7 @@ Hold **Option (⌥)** to turn your Mac trackpad into a control surface. Adjust b
 
 [Watch or download the 30-second MP4](docs/assets/quickstart.mp4) · [Static preview](docs/assets/quickstart-poster.png)
 
-An illustrated walkthrough with English headings and Korean captions. The static preview is used when reduced motion is preferred. The app's current interface is in Korean; this README includes translations for its main controls.
+A 30-second product film created with [OpenDesign](https://open-design.ai/solutions/video/) through its MCP and HyperFrames workflow, with English headings and Korean captions. The static preview is used when reduced motion is preferred. The app's current interface is in Korean; this README includes translations for its main controls.
 
 ## Build and run
 

@@ -13,7 +13,7 @@
 
 [30초 MP4 보기·다운로드](docs/assets/quickstart.mp4) · [정지 이미지](docs/assets/quickstart-poster.png)
 
-영어 제목과 한국어 자막을 넣은 일러스트 안내 영상입니다. 동작 줄이기를 설정한 브라우저에서는 정지 이미지를 표시합니다. 앱의 현재 인터페이스는 한국어입니다.
+[OpenDesign](https://open-design.ai/solutions/video/) MCP와 HyperFrames로 제작한 30초 제품 영상입니다. 영어 제목과 한국어 자막이 포함되어 있습니다. 동작 줄이기를 설정한 브라우저에서는 정지 이미지를 표시합니다. 앱의 현재 인터페이스는 한국어입니다.
 
 ## 빌드하고 실행하기
 
