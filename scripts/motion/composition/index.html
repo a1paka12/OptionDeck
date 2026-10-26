@@ -1,231 +1,94 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="od-motion-output" content="video"><meta name="od-motion-audio" content="required"><meta name="description" content="OptionDeck — an original 30-second product film. Local deterministic HTML/SVG composition."><title>OptionDeck — Within reach</title><link rel="alternate" type="video/mp4" href="../../../docs/assets/quickstart.mp4"><script src="./gsap.min.js"></script><style>
-:root{--obsidian:#080a0f;--porcelain:#f5f6f8;--blue:#387dff;--muted:#b3bfd2;--font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Helvetica,"Apple SD Gothic Neo",sans-serif;--display:110px;--heading:96px;--caption:32px;--small:24px;--ease:cubic-bezier(.22,.8,.2,1)}
-*{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;background:var(--obsidian);color:var(--porcelain);font-family:var(--font);overflow:hidden}#main{position:relative;width:1920px;height:1080px;background:var(--obsidian);overflow:hidden;isolation:isolate}#world{position:absolute;inset:0}svg text{font-family:var(--font);font-weight:450;letter-spacing:0}.mono{font-family:"SFMono-Regular",Menlo,Monaco,monospace;font-weight:400}.caps{letter-spacing:.08em;font-weight:550}.icon{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.module{fill:#354052;fill-opacity:.74;stroke:#d5e3ff;stroke-opacity:.12;stroke-width:1}.frame{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none;opacity:0}.frame h1,.frame h2{font-weight:550;letter-spacing:-.035em;line-height:1.04;margin:0}.eyebrow{position:absolute;top:128px;left:160px;font-size:32px;font-weight:550;letter-spacing:-.02em}h1{position:absolute;left:160px;top:318px;font-size:var(--display)}.left-title{position:absolute;left:160px;top:178px;font-size:var(--heading);max-width:630px}.wide-title{position:absolute;left:140px;top:117px;font-size:88px}.subtitle{position:absolute;left:140px;right:140px;bottom:92px;text-align:center;font-size:var(--caption);line-height:1.6;letter-spacing:0;font-weight:400;margin:0;color:#e3e9f3;white-space:nowrap}.micro{position:absolute;left:160px;top:533px;font-size:19px;letter-spacing:.08em;color:#95b9ff;font-weight:550}.sub-left{position:absolute;left:164px;top:444px;font-size:27px;letter-spacing:0;color:var(--muted)}.demo-note{position:absolute;bottom:44px;left:140px;right:140px;text-align:center;font-size:19px;color:#a4b1c8;letter-spacing:.01em;margin:0}.edit-label{position:absolute;left:145px;top:810px;font-size:20px;letter-spacing:.1em;color:#a6c3ff;font-weight:550}.media-notes{position:absolute;top:809px;left:140px;right:140px;text-align:center}.media-notes p{font-size:30px;line-height:1.55;margin:0 0 7px}.media-notes p[lang=ko]{letter-spacing:0}.media-notes .seek-note{font-size:24px;color:#adb9ce;line-height:1.55;margin-top:20px}.closing-title{position:absolute;left:160px;top:295px;font-size:110px}.closing-ko{position:absolute;left:165px;top:555px;font-size:32px;line-height:1.7;letter-spacing:0}.repo{position:absolute;left:165px;top:775px;font-size:30px;color:#b2c4e0;letter-spacing:0}#preview-controls{position:fixed;bottom:16px;left:24px;right:24px;display:flex;align-items:center;gap:14px;z-index:10;font:13px var(--font);color:#c7d3e7;opacity:.25;transition:opacity 180ms var(--ease)}#preview-controls:hover,#preview-controls:focus-within{opacity:1}#preview-controls button{border:1px solid #63718a;background:#101826;color:#f5f6f8;padding:9px 16px;border-radius:22px;font:inherit;cursor:pointer;letter-spacing:.02em}#preview-controls input{max-width:300px;flex:1;accent-color:var(--blue)}#preview-controls button:focus-visible,#preview-controls input:focus-visible{outline:2px solid #80acff;outline-offset:4px}html[data-render] #preview-controls{display:none}
-</style></head><body><main id="main" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080" data-fps="30" data-poster-time="10.9" aria-label="OptionDeck product explainer"><svg id="world" width="1920" height="1080" viewBox="0 0 1920 1080" aria-label="Original vector illustration of OptionDeck controls">
-<defs>
-<symbol id="sun" viewBox="0 0 48 48"><circle cx="24" cy="24" r="8"/><path d="M24 3v6m0 30v6M3 24h6m30 0h6M9 9l4 4m22 22 4 4M9 39l4-4m22-22 4-4"/></symbol>
-<symbol id="speaker" viewBox="0 0 48 48"><path d="M7 18h9L28 8v32L16 30H7zM35 15q10 9 0 18m5-26q18 17 0 34"/></symbol>
-<symbol id="globe" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19"/><ellipse cx="24" cy="24" rx="8" ry="19"/><path d="M5 24h38M9 13h30M9 35h30"/></symbol>
-<symbol id="app" viewBox="0 0 48 48"><rect x="6" y="6" width="36" height="36" rx="10"/><path d="M6 18h36M16 6v12"/></symbol>
-<symbol id="music" viewBox="0 0 48 48"><path d="M19 34V12l21-5v23M19 18l21-5"/><ellipse cx="12" cy="35" rx="7" ry="5"/><ellipse cx="33" cy="31" rx="7" ry="5"/></symbol>
-<symbol id="play" viewBox="0 0 48 48"><path d="M17 10l22 14-22 14z" fill="currentColor" stroke="none"/></symbol>
-<symbol id="pause" viewBox="0 0 48 48"><path d="M16 11v26M32 11v26" stroke-width="7"/></symbol>
-<symbol id="prev" viewBox="0 0 48 48"><path d="M12 12v24M37 12L17 24l20 12z"/></symbol>
-<symbol id="next" viewBox="0 0 48 48"><path d="M36 12v24M11 12l20 12-20 12z"/></symbol>
-<symbol id="arrow" viewBox="0 0 48 48"><path d="M10 24h28M27 13l11 11-11 11"/></symbol>
-<symbol id="check" viewBox="0 0 48 48"><path d="M10 24l10 10 20-22"/></symbol>
-<symbol id="pointer" viewBox="0 0 30 38"><path d="M4 3l22 21-11 1-5 10z" fill="#f5f6f8" stroke="#080a0f" stroke-width="2"/></symbol>
-<symbol id="option" viewBox="0 0 100 70"><path d="M8 12h23l33 47h28M58 12h34" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-
-<linearGradient id="keyBody" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#535a68"/><stop offset=".4" stop-color="#202632"/><stop offset="1" stop-color="#10141e"/></linearGradient>
-<linearGradient id="keyTop" x1="0" y1="0" x2=".75" y2="1"><stop stop-color="#3c4452"/><stop offset=".45" stop-color="#222936"/><stop offset="1" stop-color="#161c28"/></linearGradient>
-<linearGradient id="metal" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#c4cad3"/><stop offset=".4" stop-color="#8993a1"/><stop offset="1" stop-color="#3d4655"/></linearGradient>
-<linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#333c4c"/><stop offset=".55" stop-color="#1d2532"/><stop offset="1" stop-color="#141b28"/></linearGradient>
-<radialGradient id="light"><stop stop-color="#387dff" stop-opacity=".13"/><stop offset="1" stop-color="#387dff" stop-opacity="0"/></radialGradient>
-<radialGradient id="whiteLight"><stop stop-color="#d8e5ff" stop-opacity=".12"/><stop offset="1" stop-color="#d8e5ff" stop-opacity="0"/></radialGradient>
-<filter id="softShadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="20"/></filter>
-</defs>
-<ellipse id="lightPool" cx="1300" cy="520" rx="750" ry="580" fill="url(#light)"/>
-<ellipse cx="1050" cy="600" rx="1000" ry="680" fill="url(#whiteLight)" opacity=".55"/>
-<g id="setupVisual">
- <g transform="translate(660 285)"><rect width="1090" height="405" rx="36" fill="#0d121c" stroke="#aabbd7" stroke-opacity=".18"/><path d="M0 66h1090" stroke="#ffffff" stroke-opacity=".09"/>
- <text x="38" y="43" fill="#a8afbe" font-size="19" class="caps">BUILD FROM SOURCE</text><text x="54" y="145" fill="#387dff" font-size="35" >›</text><text x="96" y="145" fill="#f5f6f8" font-size="36" class="mono" id="buildLine">zsh scripts/build.sh</text>
- <text x="54" y="223" fill="#387dff" font-size="35" >›</text><text x="96" y="223" fill="#f5f6f8" font-size="36" class="mono" id="openLine">open dist/OptionDeck.app</text>
- <g id="permission" transform="translate(28 280)"><rect width="1034" height="96" rx="24" fill="#1b2433"/><use href="#check" x="24" y="26" width="40" height="40" class="icon" style="color:#93b8ff" /><text x="82" y="42" fill="#f5f6f8" font-size="27" >System Settings → Accessibility</text><text x="82" y="74" fill="#adb8ce" font-size="23" >Allow OptionDeck</text><rect x="910" y="28" width="90" height="44" rx="22" fill="#387dff"/><circle cx="978" cy="50" r="17" fill="#fff"/></g></g>
-</g>
-<g id="trackpad" transform="translate(160 610)">
- <ellipse cx="285" cy="296" rx="290" ry="30" fill="#000" opacity=".28" filter="url(#softShadow)"/>
- <rect y="8" width="580" height="294" rx="38" fill="#343c49"/>
- <rect width="580" height="294" rx="38" fill="url(#metal)" stroke="#d7dce4" stroke-opacity=".65" stroke-width="2"/>
- <rect x="7" y="7" width="566" height="276" rx="32" fill="#9ba4b0" stroke="#e1e5eb" stroke-opacity=".35"/>
- <g id="trackRing"><circle r="30" fill="#387dff" fill-opacity=".12" stroke="#387dff" stroke-width="3"/><circle r="6" fill="#387dff"/></g>
- <g id="twoFingers"><rect x="310" y="110" width="30" height="60" rx="15" fill="#d8e9ff" stroke="#387dff" stroke-width="2"/><rect x="363" y="110" width="30" height="60" rx="15" fill="#d8e9ff" stroke="#387dff" stroke-width="2"/></g>
-</g>
-<g id="key" transform="translate(1120 292)">
- <ellipse cx="250" cy="430" rx="240" ry="38" fill="#000" opacity=".45" filter="url(#softShadow)"/>
- <rect y="20" width="500" height="390" rx="83" fill="#080d17" stroke="#72819b" stroke-opacity=".28" stroke-width="2"/>
- <rect width="500" height="390" rx="80" fill="url(#keyBody)" stroke="#a1aec4" stroke-opacity=".45" stroke-width="2"/>
- <rect x="17" y="12" width="466" height="354" rx="68" fill="url(#keyTop)" stroke="#e1e7f2" stroke-opacity=".1"/>
- <path d="M55 324Q250 350 445 324" fill="none" stroke="#080d17" stroke-opacity=".7" stroke-width="3"/>
- <g id="keyLegend" style="color:#f5f6f8"><use href="#option" x="292" y="72" width="142" height="142" class="icon" style="color:#f5f6f8" /><text x="54" y="302" fill="#f5f6f8" font-size="39" >option</text></g>
- <rect id="keyPress" x="17" y="12" width="466" height="354" rx="68" fill="#387dff" fill-opacity=".18" stroke="#387dff" stroke-opacity=".85" stroke-width="3"/>
-</g>
-<g id="panel" transform="translate(850 205)">
- <rect x="14" y="25" width="884" height="642" rx="50" fill="#000" opacity=".2" filter="url(#softShadow)"/>
- <rect x="-7" y="-7" width="914" height="664" rx="49" fill="#131c2c" stroke="#7b91b4" stroke-opacity=".2"/>
- <rect width="900" height="650" rx="43" fill="url(#glass)" stroke="#b8c9e3" stroke-opacity=".3" stroke-width="1.5"/>
- <path d="M42 2h816" stroke="#ecf3ff" stroke-opacity=".24"/>
- <g id="panelHeader"><use href="#option" x="37" y="24" width="39" height="39" class="icon" style="color:#dce7ff" /><text x="89" y="56" fill="#f5f6f8" font-size="25" >OptionDeck</text><text x="860" y="55" fill="#9eacc3" font-size="16" class="caps" text-anchor="end">HOLD OPTION</text></g>
- <g id="page1"><g transform="translate(40 115)"><rect class="module" width="390" height="205" rx="30"/><use href="#sun" x="28" y="25" width="44" height="44" class="icon" style="color:#f5f6f8" /><text x="86" y="57" fill="#f5f6f8" font-size="28" >Brightness</text>
-<rect x="28" y="111" width="334" height="54" rx="27" fill="#4c5360"/><rect id="brightnessFill" x="28" y="111" width="200" height="54" rx="27" fill="#f5f6f8"/>
-<circle id="brightnessThumb" cx="222" cy="138" r="20" fill="#fff"/>
-<rect id="brightnessFocus" x="-5" y="-5" width="400" height="215" rx="35" fill="none" stroke="#387dff" stroke-width="3"/></g>
-<g transform="translate(450 115)"><rect class="module" width="410" height="205" rx="30"/><use href="#speaker" x="28" y="25" width="42" height="42" class="icon" style="color:#f5f6f8" /><text x="86" y="57" fill="#f5f6f8" font-size="28" >Volume</text>
-<rect x="28" y="111" width="354" height="54" rx="27" fill="#4c5360"/><rect x="28" y="111" width="210" height="54" rx="27" fill="#f5f6f8"/></g><g id="mediaCompact" transform="translate(40 345)"><rect class="module" width="820" height="225" rx="30"/>
-<rect x="26" y="28" width="84" height="84" rx="22" fill="#343c4b"/><use href="#music" x="46" y="47" width="44" height="44" class="icon" style="color:#f5f6f8" /><text x="132" y="64" fill="#f5f6f8" font-size="27" >Media</text><text x="132" y="103" fill="#a8afbe" font-size="23" >One grouped widget</text>
-<use href="#prev" x="572" y="50" width="40" height="40" class="icon" style="color:#f5f6f8" /><use href="#play" x="642" y="47" width="46" height="46" class="icon" style="color:#f5f6f8" /><use href="#next" x="718" y="50" width="40" height="40" class="icon" style="color:#f5f6f8" />
-<rect x="32" y="164" width="756" height="7" rx="3.5" fill="#505866"/><rect x="32" y="164" width="280" height="7" rx="3.5" fill="#d8e4ff"/><circle cx="312" cy="167.5" r="8" fill="#f5f6f8"/></g></g><g id="page2"><g id="chromeTile" transform="translate(40 115)"><rect class="module " width="250" height="170" rx="28"/><use href="#app" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="143" fill="#f5f6f8" font-size="27" >Chrome</text></g><g id="appsTile" transform="translate(320 115)"><rect class="module " width="250" height="170" rx="28"/><use href="#app" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="143" fill="#f5f6f8" font-size="27" >Applications</text></g><g id="webTile" transform="translate(600 115)"><rect class="module " width="260" height="170" rx="28"/><use href="#globe" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="143" fill="#f5f6f8" font-size="27" >Website</text></g>
-<g transform="translate(40 310)"><rect class="module" width="820" height="195" rx="30"/><text x="28" y="42" fill="#adb8ce" font-size="18" class="caps">CHROME · LIVE MENU</text><text x="28" y="105" fill="#f5f6f8" font-size="34" >New tab</text><text x="758" y="105" fill="#f5f6f8" font-size="31" text-anchor="end">⌘T</text><path d="M28 133h764" stroke="#ffffff" stroke-opacity=".08"/><text x="28" y="169" fill="#a8afbe" font-size="23" >Shortcuts from the selected app</text></g>
-<text x="450" y="559" fill="#b8c2d6" font-size="23" text-anchor="middle">Both pages. Any feature.</text></g><g id="editPage"><g id="editBrightness" transform="translate(40 115)"><rect class="module " width="250" height="175" rx="28"/><use href="#sun" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="148" fill="#f5f6f8" font-size="27" >Brightness</text></g><g id="editVolume" transform="translate(320 115)"><rect class="module " width="250" height="175" rx="28"/><use href="#speaker" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="148" fill="#f5f6f8" font-size="27" >Volume</text></g>
-<g id="editMedia" transform="translate(600 115)"><rect class="module " width="260" height="175" rx="28"/><use href="#music" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="148" fill="#f5f6f8" font-size="27" >Media</text></g><g id="editApps" transform="translate(40 315)"><rect class="module " width="250" height="175" rx="28"/><use href="#app" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="148" fill="#f5f6f8" font-size="27" >Applications</text></g>
-<g id="editShortcut" transform="translate(320 315)"><rect class="module" width="540" height="175" rx="28"/><text x="26" y="49" fill="#adb8ce" font-size="18" class="caps">CHROME · LIVE MENU</text><text x="26" y="108" fill="#f5f6f8" font-size="29" >New tab</text><text x="506" y="108" fill="#f5f6f8" font-size="28" text-anchor="end">⌘T</text></g>
-<g id="insertionGhost" transform="translate(320 115)"><rect width="250" height="175" rx="28" fill="#387dff" fill-opacity=".14" stroke="#80acff" stroke-width="2" stroke-dasharray="8 8"/><use href="#globe" x="104" y="65" width="42" height="42" class="icon" style="color:#80acff" /></g>
-<g id="newWebsite" transform="translate(320 115)"><rect id="newWebsiteShell" width="250" height="175" rx="28" fill="#285dbd" stroke="#9cbfff" stroke-opacity=".7"/><use href="#globe" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="147" fill="#f5f6f8" font-size="27" >Website</text>
-<path id="resizeHandle" d="M217 157l17-17m-6 22 11-11" stroke="#e7efff" stroke-width="3" stroke-linecap="round"/></g>
-<text x="450" y="559" fill="#b8c2d6" font-size="23" text-anchor="middle">Add · Resize · Remove</text></g>
- <g id="panelRing"><circle r="29" fill="#387dff" fill-opacity=".12" stroke="#6ea1ff" stroke-width="3"/><circle r="5" fill="#fff"/></g>
- <g id="dots"><circle id="dot1" cx="438" cy="615" r="5" fill="#f5f6f8"/><circle id="dot2" cx="462" cy="615" r="5" fill="#5b6679"/></g>
-</g>
-<g id="library" transform="translate(140 308)"><rect x="-6" y="-6" width="512" height="458" rx="38" fill="#101724" stroke="#7386a7" stroke-opacity=".2"/><rect width="500" height="446" rx="32" fill="#111a28" stroke="#9aaecf" stroke-opacity=".18"/>
-<text x="32" y="52" fill="#acb9ce" font-size="18" class="caps">FEATURE LIBRARY</text>
-<rect x="24" y="86" width="452" height="106" rx="24" fill="#29364b"/><use href="#globe" x="48" y="115" width="44" height="44" class="icon" style="color:#9fc0ff" /><text x="118" y="149" fill="#f5f6f8" font-size="30" >Website</text>
-<rect x="24" y="208" width="452" height="88" rx="24" fill="#1b2637"/><use href="#app" x="48" y="230" width="40" height="40" class="icon" style="color:#b8c4d8" /><text x="118" y="263" fill="#bdc7d7" font-size="27" >Application</text>
-<rect x="24" y="312" width="452" height="88" rx="24" fill="#1b2637"/><use href="#sun" x="48" y="334" width="40" height="40" class="icon" style="color:#b8c4d8" /><text x="118" y="367" fill="#bdc7d7" font-size="27" >Brightness</text></g>
-<g id="dragWebsite" transform="translate(164 394)"><rect x="-5" y="-5" width="260" height="185" rx="33" fill="#387dff" fill-opacity=".12"/><rect width="250" height="175" rx="28" fill="#285dbd" stroke="#a1c3ff" stroke-opacity=".8"/><use href="#globe" x="26" y="24" width="40" height="40" class="icon" style="color:#f5f6f8" /><text x="26" y="147" fill="#f5f6f8" font-size="27" >Website</text></g>
-<g id="cursor"><use href="#pointer" x="0" y="0" width="42" height="42" class="icon" style="color:#f5f6f8" /></g>
-<g id="mediaFocus" transform="translate(770 283)"><rect x="-8" y="-8" width="978" height="446" rx="48" fill="#121e30" stroke="#7c9ac8" stroke-opacity=".25"/><rect width="962" height="430" rx="40" fill="url(#glass)" stroke="#a1b7d8" stroke-opacity=".4"/>
-<rect x="38" y="38" width="128" height="128" rx="30" fill="#334158"/><use href="#music" x="72" y="71" width="60" height="60" class="icon" style="color:#d7e6ff" /><text x="198" y="83" fill="#f5f6f8" font-size="38" >Media controls</text><text x="198" y="128" fill="#b2bed0" font-size="26" >One unified widget</text>
-<g transform="translate(306 184)"><use href="#prev" x="0" y="0" width="58" height="58" class="icon" style="color:#f5f6f8" /><circle cx="174" cy="29" r="52" fill="#e9eef8"/><g id="mediaPlay" style="color:#141e30"><use href="#play" x="146" y="0" width="58" height="58" class="icon" style="color:#141e30" /></g><g id="mediaPause"><use href="#pause" x="146" y="0" width="58" height="58" class="icon" style="color:#141e30" /></g><use href="#next" x="292" y="0" width="58" height="58" class="icon" style="color:#f5f6f8" /></g>
-<rect x="46" y="332" width="870" height="10" rx="5" fill="#505e74"/><rect id="seekFill" x="46" y="332" width="290" height="10" rx="5" fill="#a3c4ff"/><circle id="seekThumb" cx="336" cy="337" r="13" fill="#fff"/>
-<text x="46" y="392" fill="#aab9ce" font-size="16" class="caps">ILLUSTRATED CONTROLS</text><text x="916" y="392" fill="#aab9ce" font-size="19" text-anchor="end">No track metadata shown</text></g>
-<g id="musicChoice" transform="translate(160 452)"><text x="0" y="0" fill="#aab9ce" font-size="18" class="caps">MUSIC APP</text><rect y="24" width="418" height="88" rx="26" fill="#172337" stroke="#8dabd7" stroke-opacity=".3"/><use href="#music" x="24" y="47" width="40" height="40" class="icon" style="color:#a9c7ff" /><text x="82" y="79" fill="#f5f6f8" font-size="28" >Choose app</text><path d="M365 62l10 10 10-10" fill="none" stroke="#f5f6f8" stroke-width="2"/><text x="0" y="157" fill="#acb9ce" font-size="25" >Selected separately</text></g>
-<g id="releaseLine"><path d="M200 820Q960 920 1720 820" fill="none" stroke="#387dff" stroke-opacity=".25"/></g>
-</svg><section id="hero" class="frame" aria-label="A sculpted Option key introduces OptionDeck."><div class="eyebrow">OptionDeck</div><h1>Your Mac.<br>Within reach.</h1><p class="subtitle" lang="ko">손끝에서, 바로.</p><!-- frame:1 duration:3000 transition:fade --></section>
-<section id="setup" class="frame" aria-label="The key moves aside as source setup and Accessibility appear."><h2 class="left-title">Build.<br>Open.<br>Allow.</h2><p class="subtitle" lang="ko">빌드하고, 실행하고, 손쉬운 사용을 허용하세요.</p><!-- frame:2 duration:4000 transition:match --></section>
-<section id="control" class="frame" aria-label="Hold Option; matching rings connect trackpad position to the panel."><h2 class="left-title">Hold.<br>Move.<br>Control.</h2><div class="micro" id="holdLabel">⌥ &nbsp; HOLD TO REACH</div><p class="subtitle" id="controlSub1" lang="ko">Option을 누른 채, 옆으로 움직여 슬라이더를 찾으세요.</p><p class="subtitle" id="controlSub2" lang="ko">위아래로 움직이면 밝기가 바로 바뀝니다.</p><p class="demo-note">Illustrated interaction · cinematic timing, not a latency measurement</p><!-- frame:3 duration:6000 transition:lift --></section>
-<section id="pages" class="frame" aria-label="Two-finger swipe reveals page two with live Chrome menu shortcuts."><h2 class="left-title">Swipe.<br>More within reach.</h2><p class="sub-left">Two fingers. One gesture.</p><p class="subtitle" lang="ko">두 손가락으로 옆으로 넘기세요. 두 페이지 모두 원하는 기능을 담습니다.</p><!-- frame:4 duration:4000 transition:swipe --></section>
-<section id="edit" class="frame" aria-label="Insert a new Website tile, resize it, then remove it; neighbors reflow."><h2 class="wide-title">Make room for you.</h2><p class="subtitle" id="editSub1" lang="ko">기능을 끌어오면, 놓기 전에 공간이 열립니다.</p><p class="subtitle" id="editSub2" lang="ko">놓으면 기존 타일 옆에 새 타일이 추가됩니다.</p><p class="subtitle" id="editSub3" lang="ko">오른쪽 아래 모서리를 당겨 크기를 바꾸세요.</p><p class="subtitle" id="editSub4" lang="ko">패널 밖으로 빼면 삭제되고, 이웃 타일이 빈자리를 채웁니다.</p><div class="edit-label" id="editLabel1">INSERT</div><div class="edit-label" id="editLabel2">RESIZE</div><div class="edit-label" id="editLabel3">REMOVE</div><!-- frame:5 duration:7000 transition:reflow --></section>
-<section id="media" class="frame" aria-label="Unified media controls with music app selection and compatibility notes."><h2 class="left-title">One media<br>widget.</h2><div class="media-notes"><p>YouTube Music requires installation as a Chrome web app.</p><p lang="ko">YouTube Music은 Chrome에서 앱으로 설치해야 표시됩니다.</p><p class="seek-note">Seek requires an accessibility slider from the music app.<br><span lang="ko">탐색은 음악 앱이 손쉬운 사용 슬라이더를 제공할 때 지원됩니다.</span></p></div><!-- frame:6 duration:4000 transition:match --></section>
-<section id="close" class="frame" aria-label="Release Option, return to flow and the repository address."><div class="eyebrow">OptionDeck</div><h2 class="closing-title">Back to<br>your flow.</h2><p class="closing-ko" lang="ko">Option을 놓고, 다시 몰입하세요.</p><p class="repo">github.com/a1paka12/OptionDeck</p><!-- frame:7 duration:2000 transition:resolve --></section><audio src="assets/optiondeck-sound.wav" data-start="0" data-duration="30" data-volume="0.7" preload="auto"></audio></main><nav id="preview-controls" aria-label="Film preview controls"><button id="toggle" type="button">Pause</button><button id="poster" type="button">Static poster</button><input id="scrub" aria-label="Seek film in seconds" type="range" min="0" max="30" step="0.01" value="0"><output id="time">0.00 / 30.00</output><span>Click picture for sound · Space to play/pause · ← → to seek</span></nav><script>
-const CONFIG=Object.freeze({duration:30,width:1920,height:1080,fps:30,poster:10.9,beats:[0,3,7,13,17,24,28,30]});
-const tl=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
-const clock={t:0};tl.to(clock,{t:30,duration:30,ease:'none'},0);
-window.__timelines={main:tl};window.OptionDeckFilm={config:CONFIG,timeline:tl};
-if(window.__odMotionRender)document.documentElement.dataset.render='true';
-const set=(s,v)=>gsap.set(s,v);
-const hide=s=>set(s,{opacity:0});
-hide('#setupVisual,#panel,#trackpad,#library,#dragWebsite,#cursor,#mediaFocus,#musicChoice,#releaseLine,#keyPress,#page2,#editPage,#panelRing,#twoFingers,#brightnessFocus,#insertionGhost,#newWebsite,#mediaPause');
-set('#key',{svgOrigin:'250 195'});set('#panel',{svgOrigin:'450 325'});
-set('#trackRing',{x:352,y:128});set('#panelRing',{x:547,y:283});
-set('#key',{x:1120,y:292,rotation:-7,scale:.94});
-const appear=(s,at,d=.5)=>tl.to(s,{opacity:1,duration:d},at);
-const vanish=(s,at,d=.3)=>tl.to(s,{opacity:0,duration:d,ease:'power2.in'},at);
-// Text enters inside a moving mask. Full phrases share a stable reading window.
-function title(id,start,end){
- tl.fromTo('#'+id,{opacity:0},{opacity:1,duration:.3},start);
- tl.fromTo('#'+id+' h1,#'+id+' h2',{y:45,clipPath:'inset(0 0 100% 0)'},{y:0,clipPath:'inset(0 0 0% 0)',duration:.65,ease:'power3.out'},start+.04);
- if(end<30)vanish('#'+id,end-.23,.23);
-}
-title('hero',0,3);title('setup',3,7);title('control',7,13);title('pages',13,17);title('edit',17,24);title('media',24,28);title('close',28,30);
-tl.fromTo('#key',{y:325,rotation:-10,scale:.87},{y:292,rotation:-7,scale:.94,duration:1.6},0);
-tl.to('#lightPool',{opacity:.7,duration:1.5},.4);
-// The same physical key travels into the setup, then stays held through the demo.
-tl.to('#key',{x:183,y:677,scale:.36,rotation:0,duration:.85,ease:'power3.inOut'},2.7);
-appear('#setupVisual',3.05,.5);
-tl.fromTo('#setupVisual',{x:75},{x:0,duration:.65},3.05);
-tl.fromTo('#buildLine',{opacity:0,x:20},{opacity:1,x:0,duration:.35},3.25);
-tl.fromTo('#openLine',{opacity:0,x:20},{opacity:1,x:0,duration:.35},4.1);
-tl.fromTo('#permission',{opacity:0,y:300},{opacity:1,y:280,duration:.5},5.05);
-vanish('#setupVisual',6.65,.35);
-tl.to('#key',{x:170,y:515,scale:.27,duration:.7,ease:'power3.inOut'},6.65);
-tl.to('#keyLegend',{y:6,duration:.18},7.12);appear('#keyPress',7.12,.18);
-appear('#panel',7.08,.6);tl.fromTo('#panel',{y:275,scale:.96},{y:205,scale:1,duration:.75,ease:'power3.out'},7.08);
-appear('#trackpad',7.12,.6);tl.fromTo('#trackpad',{y:655},{y:610,duration:.7},7.12);
-appear('#panelRing',7.65,.25);
-// Horizontal travel locates the slider. Normalized points match on trackpad/panel.
-tl.to('#trackRing',{x:148,y:128,duration:1.0,ease:'power2.inOut'},8.1);
-tl.to('#panelRing',{x:230,y:283,duration:1.0,ease:'power2.inOut'},8.1);
-appear('#brightnessFocus',9.05,.18);
-tl.to('#trackRing',{y:70,duration:.8,ease:'power2.inOut'},9.8);
-tl.to('#panelRing',{y:155,duration:.8,ease:'power2.inOut'},9.8);
-tl.to('#brightnessFill',{attr:{width:318},duration:.8,ease:'power2.inOut'},9.8);
-tl.to('#brightnessThumb',{attr:{cx:340},duration:.8,ease:'power2.inOut'},9.8);
-tl.to('#lightPool',{opacity:1,duration:.8},9.8);
-hide('#controlSub2');vanish('#controlSub1',9.65,.18);appear('#controlSub2',9.85,.25);
-vanish('#panelRing,#brightnessFocus',12.65,.25);
-// A horizontal two-finger sweep changes pages; every page remains feature-capable.
-appear('#twoFingers',13.05,.2);vanish('#trackRing',13.05,.2);
-tl.to('#twoFingers',{x:-170,duration:.7,ease:'power2.inOut'},13.55);
-tl.to('#page1',{x:-90,opacity:0,duration:.55,ease:'power2.inOut'},13.62);
-tl.fromTo('#page2',{x:95,opacity:0},{x:0,opacity:1,duration:.6,ease:'power2.inOut'},13.62);
-tl.to('#dot1',{fill:'#5b6679',duration:.2},13.9);tl.to('#dot2',{fill:'#f5f6f8',duration:.2},13.9);
-vanish('#twoFingers',14.55,.25);
-vanish('#trackpad',16.55,.4);tl.to('#trackpad',{y:650,duration:.4},16.55);
-tl.to('#key',{x:150,y:790,scale:.18,duration:.7,ease:'power3.inOut'},16.5);
-// Direct manipulation: existing neighbors move BEFORE the new tile is released.
-vanish('#page2',16.8,.25);appear('#editPage',17.05,.3);appear('#library',17.1,.4);
-set('#panelHeader',{opacity:1});
-hide('#editSub2,#editSub3,#editSub4,#editLabel2,#editLabel3');
-appear('#cursor',17.4,.18);tl.set('#cursor',{x:360,y:470},17.4);
-appear('#dragWebsite',17.65,.2);
-tl.fromTo('#dragWebsite',{x:164,y:394,scale:.65},{x:1170,y:320,scale:1,duration:1.0,ease:'power3.inOut'},17.7);
-tl.to('#cursor',{x:1347,y:461,duration:1.0,ease:'power3.inOut'},17.7);
-// 18.15: the insertion space opens; drop is delayed until 19.0.
-appear('#insertionGhost',18.15,.3);
-tl.to('#editVolume',{x:600,duration:.45,ease:'power3.out'},18.15);
-tl.to('#editMedia',{x:40,y:315,duration:.45,ease:'power3.out'},18.15);
-tl.to('#editApps',{x:320,y:315,duration:.45,ease:'power3.out'},18.15);
-tl.to('#editShortcut',{x:600,y:315,duration:.45,ease:'power3.out'},18.15);
-tl.to('#editShortcut rect',{attr:{width:260},duration:.45},18.15);
-tl.to('#editShortcut text:last-child',{attr:{x:232},duration:.45},18.15);
-tl.to('#editShortcut text:first-of-type',{opacity:0,duration:.2},18.15);
-// Website is a new tile, independent of the original library item and neighbors.
-vanish('#dragWebsite',18.97,.12);appear('#newWebsite',18.97,.12);vanish('#insertionGhost',19.0,.14);
-tl.fromTo('#newWebsite',{scale:.97},{scale:1,duration:.3,ease:'back.out(1.2)',svgOrigin:'445 202'},19);
-vanish('#editSub1',19.05,.18);appear('#editSub2',19.2,.2);
-// Resize from the bottom-right; all neighbors make room rather than being covered.
-vanish('#editLabel1',20.2,.15);appear('#editLabel2',20.35,.2);
-vanish('#editSub2',20.2,.15);appear('#editSub3',20.35,.2);
-tl.to('#cursor',{x:1418,y:478,duration:.3},20.3);
-tl.to('#newWebsiteShell',{attr:{width:540},duration:.7,ease:'power3.inOut'},20.7);
-tl.to('#resizeHandle',{x:290,duration:.7,ease:'power3.inOut'},20.7);
-tl.to('#cursor',{x:1708,y:478,duration:.7,ease:'power3.inOut'},20.7);
-tl.to('#editVolume',{x:600,y:315,duration:.7,ease:'power3.inOut'},20.7);
-tl.to('#editShortcut',{opacity:0,duration:.2},20.7);
-// Pull out to remove. Tile leaves first, then surviving features close the gap.
-vanish('#editLabel2',21.9,.15);appear('#editLabel3',22.05,.2);
-vanish('#editSub3',21.9,.15);appear('#editSub4',22.05,.2);
-tl.to('#cursor',{x:1420,y:410,duration:.22},22.0);
-tl.to('#newWebsite',{x:-420,y:20,rotation:-3,scale:.82,duration:.65,ease:'power3.inOut'},22.3);
-tl.to('#cursor',{x:710,y:300,duration:.65,ease:'power3.inOut'},22.3);
-vanish('#newWebsite',22.95,.2);
-tl.to('#editVolume',{x:320,y:115,duration:.5,ease:'power3.out'},22.95);
-tl.to('#editMedia',{x:600,y:115,duration:.5,ease:'power3.out'},22.95);
-tl.to('#editApps',{x:40,y:315,duration:.5,ease:'power3.out'},22.95);
-tl.to('#editShortcut',{x:320,y:315,opacity:1,duration:.5},22.95);
-tl.to('#editShortcut rect',{attr:{width:540},duration:.5},22.95);
-tl.to('#editShortcut text:last-child',{attr:{x:506},duration:.5},22.95);
-tl.to('#editShortcut text:first-of-type',{opacity:1,duration:.3},23.1);
-vanish('#library,#cursor',23.6,.35);vanish('#panel',23.72,.28);
-// Matching media geometry resolves into the focused, unified player.
-appear('#mediaFocus,#musicChoice',24,.4);
-tl.fromTo('#mediaFocus',{y:305,scale:.98,svgOrigin:'1250 498'},{y:283,scale:1,duration:.55},24);
-vanish('#mediaPlay',24.75,.15);appear('#mediaPause',24.75,.15);
-tl.to('#seekFill',{attr:{width:600},duration:1.0,ease:'power2.inOut'},25.45);
-tl.to('#seekThumb',{attr:{cx:646},duration:1.0,ease:'power2.inOut'},25.45);
-vanish('#mediaPause',27.05,.15);appear('#mediaPlay',27.05,.15);
-// Key release resolves the same visual motif, leaving a quiet workspace.
-vanish('#mediaFocus,#musicChoice',27.72,.28);
-tl.to('#keyLegend',{y:0,duration:.2},28);vanish('#keyPress',28,.22);
-tl.to('#key',{x:1230,y:360,scale:.69,rotation:-5,duration:.8,ease:'power3.inOut'},27.85);
-tl.to('#lightPool',{opacity:.24,duration:.8},28);
-tl.to('#key',{y:351,duration:1.1,ease:'power2.out'},28.8);
-// Public deterministic seek hook; the host player remains the only playback clock.
-window.seek=function(seconds){const t=Math.max(0,Math.min(30,Number(seconds)||0));if(window.__odMotionPlayer)window.__odMotionPlayer.seek(t);else tl.pause().seek(t,true);return t;};
-window.OptionDeckFilm.seek=window.seek;
-function previewInit(){
- const p=window.__odMotionPlayer;if(!p){setTimeout(previewInit,50);return;}
- const query=new URLSearchParams(location.search);const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- if(query.has('t'))window.seek(Number(query.get('t')));else if(query.get('poster')==='1'||reduced)window.seek(CONFIG.poster);
- document.getElementById('toggle').onclick=()=>p.state().playing?p.pause():p.play();
- document.getElementById('poster').onclick=()=>window.seek(CONFIG.poster);
- const range=document.getElementById('scrub');range.oninput=()=>window.seek(Number(range.value));
- document.addEventListener('keydown',e=>{if(e.target.matches('input'))return;if(e.code==='Space'){e.preventDefault();p.state().playing?p.pause():p.play();}if(e.key==='ArrowRight')window.seek(p.state().time+1);if(e.key==='ArrowLeft')window.seek(p.state().time-1);});
- (function sync(){const s=p.state();range.value=s.time;document.getElementById('time').textContent=s.time.toFixed(2)+' / 30.00';document.getElementById('toggle').textContent=s.playing?'Pause':'Play';requestAnimationFrame(sync);})();
-}
-if(!window.__odMotionRender)window.addEventListener('DOMContentLoaded',()=>setTimeout(previewInit,60),{once:true});
-window.__compositionReady=document.fonts.ready;
-</script><script data-od-motion-source-player="8">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="od-motion-output" content="video">
+<meta name="od-motion-audio" content="silent">
+<title>OptionDeck — Native UI</title>
+<link rel="alternate" type="video/mp4" href="../../../docs/assets/quickstart.mp4">
+<link rel="image_src" href="../../../docs/assets/quickstart-poster.png">
+<script src="./gsap.min.js"></script>
+<style>
+:root{--ground:#090c10;--stage-w:1920px;--stage-h:1080px;--panel-w:1200px;--panel-h:811.7647058824px;--surface-shadow:0 20px 64px #0007,0 0 32px #ffffff04;}
+*{box-sizing:border-box}html,body{margin:0;width:var(--stage-w);height:var(--stage-h);overflow:hidden;background:var(--ground)}
+#main{width:var(--stage-w);height:var(--stage-h);display:grid;place-items:center;background:var(--ground);isolation:isolate}
+#viewport{position:relative;width:var(--panel-w);height:var(--panel-h);overflow:hidden;border-radius:48px;box-shadow:var(--surface-shadow);grid-area:1/1}
+#native-surface{position:absolute;left:0;top:0;width:2000px;height:1480px;transform-origin:0 0}
+#native-capture{display:block;width:2000px;height:1480px;max-width:none;object-fit:contain;background:var(--ground)}
+#static-poster{display:none;width:1920px;height:1080px;grid-area:1/1;object-fit:contain}
+body.static #viewport{visibility:hidden}body.static #static-poster{display:block}
+</style>
+</head>
+<body>
+<main id="main" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080" data-fps="30" data-poster-time="3" aria-label="OptionDeck native SwiftUI preview">
+<div id="viewport"><div id="native-surface">
+<video id="native-capture" class="clip" src="./assets/native-ui.mp4" data-start="0" data-duration="30" data-media-start="0" data-track-index="0" data-volume="0" muted playsinline preload="auto" aria-label="Unaltered native OptionDeck recording"></video>
+</div></div>
+<img id="static-poster" src="../../../docs/assets/quickstart-poster.png" width="1920" height="1080" alt="Actual native OptionDeck first-page interface">
+</main>
+<script>
+// Source pixels: 2000 x 1480, 450 native frames at 15 fps; no UI recreation.
+// Panel-only bounds in those pixels: x=320, y=280, width=1360, height=920.
+// Full editor retains the entire 2000 x 1480 recording at 1350 x 999.
+const CONFIG=Object.freeze({duration:30,fps:30,sourceFps:15,width:1920,height:1080,
+ panel:{width:1200,height:1200*920/1360,scale:1200/1360,x:-320*1200/1360,y:-280*1200/1360,radius:48},
+ editor:{width:1350,height:999,scale:.675,x:0,y:0,radius:0},
+ transitions:{toEditor:11.45,toEditorDuration:.55,toPanel:28,toPanelDuration:.55}});
+const tl=gsap.timeline({paused:true});
+const clock={t:0};
+const panel=CONFIG.panel,editor=CONFIG.editor;
+gsap.set('#viewport',{width:panel.width,height:panel.height,borderRadius:panel.radius});
+gsap.set('#native-surface',{x:panel.x,y:panel.y,scale:panel.scale,transformOrigin:'0 0'});
+tl.to(clock,{t:CONFIG.duration,duration:CONFIG.duration,ease:'none'},0);
+tl.to('#viewport',{width:editor.width,height:editor.height,borderRadius:editor.radius,duration:.55,ease:'power2.inOut'},11.45);
+tl.to('#native-surface',{x:editor.x,y:editor.y,scale:editor.scale,duration:.55,ease:'power2.inOut'},11.45);
+tl.to('#viewport',{width:panel.width,height:panel.height,borderRadius:panel.radius,duration:.55,ease:'power2.inOut'},28);
+tl.to('#native-surface',{x:panel.x,y:panel.y,scale:panel.scale,duration:.55,ease:'power2.inOut'},28);
+window.__timelines={main:tl};
+window.OPTIONDECK_CONFIG=CONFIG;
+// Export: HyperFrames extracts and injects source video frames at each timeline time.
+// Do not drive currentTime or play the video in render mode.
+// Preview: use the shared timeline; seek the paused native video to its honest 15 fps cadence.
+(function nativePreview(){
+ if(window.__odMotionRender)return;
+ const video=document.getElementById('native-capture');
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ const thumbnail=window.__odMotionThumbnail===true||new URL(location.href).searchParams.get('odMotionThumbnail')==='1';
+ let pending=null,requested=-1;
+ function target(t){return Math.min(449,Math.max(0,Math.floor((t+1e-7)*15)))/15;}
+ function requestFrame(t){
+  const wanted=target(t);
+  if(video.readyState<1||video.seeking){pending=wanted;return;}
+  if(requested!==wanted){requested=wanted;video.currentTime=wanted;}
+ }
+ video.addEventListener('seeked',()=>{if(pending!==null){const t=pending;pending=null;requestFrame(t);}});
+ function paint(){if(!document.body.classList.contains('static'))requestFrame(tl.time());requestAnimationFrame(paint);}
+ requestAnimationFrame(paint);
+ window.seek=async function(seconds){
+  const t=Math.max(0,Math.min(30,Number(seconds)||0));
+  document.body.classList.remove('static');
+  if(window.__odMotionPlayer)window.__odMotionPlayer.seek(t);else tl.pause().seek(t,true);
+  if(video.readyState<1)await new Promise(resolve=>video.addEventListener('loadedmetadata',resolve,{once:true}));
+  const wanted=target(t);
+  pending=null;
+  if(video.seeking)await new Promise(resolve=>video.addEventListener('seeked',resolve,{once:true}));
+  if(Math.abs(video.currentTime-wanted)>.00001){
+   await new Promise(resolve=>{video.addEventListener('seeked',resolve,{once:true});requested=wanted;video.currentTime=wanted;});
+  }
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  return {seconds:t,nativeFrame:Math.min(449,Math.floor((t+1e-7)*15))};
+ };
+ function staticMode(){if(window.__odMotionPlayer)window.__odMotionPlayer.pause();else tl.pause();document.body.classList.add('static');}
+ function boot(){
+  if(reduced.matches||thumbnail){staticMode();requestAnimationFrame(staticMode);}
+  document.getElementById('main').addEventListener('click',()=>document.body.classList.remove('static'));
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+ reduced.addEventListener('change',()=>{if(reduced.matches)staticMode();});
+})();
+</script>
+<script data-od-motion-source-player="8">
 
 window.__odValidateMotionTimeline = function (root, tl) {
   var mode = document.querySelector('meta[name="od-motion-output"]');
@@ -389,4 +252,8 @@ function createMotionAudioSync(audio) {
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, {once:true}); else boot();
 })();
-</script><!-- HYPERFRAMES_META: [{"duration": 3000, "transition": "fade", "sceneSummary": "A sculpted Option key introduces OptionDeck."}, {"duration": 4000, "transition": "match", "sceneSummary": "The key moves aside as source setup and Accessibility appear."}, {"duration": 6000, "transition": "lift", "sceneSummary": "Hold Option; matching rings connect trackpad position to the panel."}, {"duration": 4000, "transition": "swipe", "sceneSummary": "Two-finger swipe reveals page two with live Chrome menu shortcuts."}, {"duration": 7000, "transition": "reflow", "sceneSummary": "Insert a new Website tile, resize it, then remove it; neighbors reflow."}, {"duration": 4000, "transition": "match", "sceneSummary": "Unified media controls with music app selection and compatibility notes."}, {"duration": 2000, "transition": "resolve", "sceneSummary": "Release Option, return to flow and the repository address."}] --></body></html>
+</script>
+<!-- Native capture provenance: ../../inputs/capture.json. No subtitles, captions, translations,
+extra wordmark, controls, cursor overlays, fabricated progress or simulated widgets are authored.
+The recorded Korean interface is preserved. The preview is not a filmed hardware test. -->
+</body></html>

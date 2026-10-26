@@ -1,5 +1,14 @@
 {
-  "id": "optiondeck",
-  "name": "optiondeck",
-  "createdAt": "2026-10-26T11:01:05.494Z"
+  "id": "optiondeck-native",
+  "name": "OptionDeck native capture",
+  "duration": 30,
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "source": "assets/native-ui.mp4",
+  "sourceFps": 15,
+  "sourceFrames": 450,
+  "audio": "silent",
+  "poster": "../../../docs/assets/quickstart-poster.png",
+  "output": "../../../docs/assets/quickstart.mp4"
 }

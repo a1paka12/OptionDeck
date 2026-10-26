@@ -8,12 +8,12 @@ Hold **Option (⌥)** to turn your Mac trackpad into a control surface. Adjust b
 
 <picture>
   <source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/quickstart-poster.png">
-  <img src="docs/assets/quickstart.gif" alt="30-second illustrated OptionDeck guide: build, allow Accessibility, hold Option, adjust controls, switch pages, add and remove tiles, choose a music app." width="960">
+  <img src="docs/assets/quickstart.gif" alt="30-second native OptionDeck UI capture: brightness and volume, both pages, insertion previews, tile resizing and removal, and music-app settings." width="960">
 </picture>
 
 [Watch or download the 30-second MP4](docs/assets/quickstart.mp4) · [Static preview](docs/assets/quickstart-poster.png)
 
-A 30-second product film created with [OpenDesign](https://open-design.ai/solutions/video/) through its MCP and HyperFrames workflow, with English headings and Korean captions. The static preview is used when reduced motion is preferred. The app's current interface is in Korean; this README includes translations for its main controls.
+A caption-free, 30-second capture of the actual native SwiftUI interface, composed with [OpenDesign](https://open-design.ai/solutions/video/) MCP and HyperFrames. The UI is rendered offscreen with scripted preview inputs; device values and personal settings are not changed. The static preview is used when reduced motion is preferred. The app's current interface is in Korean; this README includes translations for its main controls.
 
 ## Build and run
 

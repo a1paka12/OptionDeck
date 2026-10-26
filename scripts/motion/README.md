@@ -1,52 +1,39 @@
-# OpenDesign motion film
+# Native UI film
 
-The 30-second OptionDeck film was created through **OpenDesign MCP**, using its `video-hyperframes` workflow with motion-design guidance. The editable composition, vector artwork and locally synthesized soundtrack live in [`composition/`](composition/). No personal desktop footage, external media-generation service or API credentials are included.
+The 30-second README video uses the actual `DeckView` and `DeckSettingsView` from this repository. OpenDesign MCP / HyperFrames composes the native capture into the final film. There are no added captions or subtitles; Korean text belongs to the app itself.
 
-## Deliverables
+The capture runs offscreen in a separate process. It uses scripted preview values for brightness and volume and the editor's real insertion, resize, removal and Rust layout functions. It does not activate windows, send global mouse/keyboard events, change device settings, start playback, or save personal preferences. This is a native UI preview, rather than a recording of physical trackpad input. Personal settings are replaced with the public defaults only in temporary capture sources.
 
-- [`../../docs/assets/quickstart.mp4`](../../docs/assets/quickstart.mp4): 1920 × 1080, 30 fps, exactly 30.000 seconds, with the original local soundtrack.
-- [`../../docs/assets/quickstart.gif`](../../docs/assets/quickstart.gif): silent 960 × 540 README animation, exactly 30 seconds.
-- [`../../docs/assets/quickstart-poster.png`](../../docs/assets/quickstart-poster.png): 1080p static preview used for reduced-motion preferences.
+## Recreate the native capture
 
-The English and Korean READMEs embed the same media.
+From the repository root on macOS, after installing the build prerequisites:
 
-## Preview and edit
+```sh
+zsh scripts/build.sh
+python3 scripts/motion/capture_native.py
+swiftc -parse-as-library -O scripts/motion/encode_native.swift \
+  -o .build/native-ui/encode-native
+.build/native-ui/encode-native .build/native-ui/frames .build/native-ui/native-ui.mp4
+```
 
-Open `composition/index.html` in OpenDesign or a current browser. The stage scales to the window. The composition provides playback, pause, audio and seeking controls outside its exported frame.
+The capture script compiles temporary copies under `.build/native-ui/`; it does not edit production app sources. A restricted execution sandbox may prevent macOS app discovery and native video codecs from working; run the capture/encoder in a normal local terminal. The encoder expects a new output path. Delete or rename an earlier local output before re-encoding.
 
-- Append `?poster=1` for the static poster.
-- Append `?t=18.65` to inspect the insertion beat.
-- Use Space to pause/play and arrow keys to seek by one second.
-- In the browser console, call `seek(10.9)` or `window.__timelines.main.seek(10.9)`.
+The intermediate recording is 2000 × 1480, 15 fps, exactly 30 seconds. It preserves the native source cadence. `capture.json` records the sequence. Only generic Finder menu commands are retained; no document/window titles, personal paths or music metadata are recorded.
 
-Motion is authored on one deterministic GSAP timeline. `OptionDeckFilm.config` defines the duration, frame rate, dimensions and beat boundaries. The root CSS variables define typography and colors. The source honors reduced-motion preferences with a static preview.
+## Edit with OpenDesign
 
-| Time | Beat |
-| --- | --- |
-| 0–3s | Option key and product introduction |
-| 3–7s | Build, open, allow Accessibility |
-| 7–13s | Hold Option, find and adjust a slider |
-| 13–17s | Two-finger swipe and live app-menu shortcuts |
-| 17–24s | Insertion ghost, new tile, resize, remove and reflow |
-| 24–28s | Grouped media, music-app choice, Chrome web-app requirement |
-| 28–30s | Release Option and return to work |
+The editable HyperFrames project is in [`composition/`](composition/). Import `scripts/motion/composition/` and `docs/assets/quickstart-poster.png` into an OpenDesign project at those same relative paths. Keep the composition’s local media and runtime files together. The final export is 1920 × 1080 at 30 fps. Its source includes deterministic seeking and a static preview for reduced-motion preferences.
 
-## Re-export with OpenDesign
-
-Import the contents of `composition/` into an OpenDesign project. Keep `index.html`, `gsap.min.js`, `hyperframes.json`, `meta.json`, and `assets/optiondeck-sound.wav` together. From the project environment provided by OpenDesign, run its local HyperFrames renderer, adapting the composition path to the imported folder:
+Use OpenDesign's local renderer from its provided project environment, adapting the composition directory to the imported location:
 
 ```sh
 "$OD_NODE_BIN" "$OD_BIN" media generate \
   --project "$OD_PROJECT_ID" \
   --surface video --model hyperframes-html \
-  --composition-dir "composition" \
-  --output "optiondeck.mp4"
+  --composition-dir "scripts/motion/composition" \
+  --output "docs/assets/quickstart.mp4"
 ```
 
-If OpenDesign returns an asynchronous task, use the `media wait` command it prints. This renderer uses the authored HTML timeline rather than a generative video API. Replace `docs/assets/quickstart.mp4` only after reviewing the new export. The GIF and poster should be regenerated from that same movie so they stay consistent.
+Follow the `media wait` command if the renderer returns an asynchronous task. Review the exported movie before replacing [`quickstart.mp4`](../../docs/assets/quickstart.mp4), and derive the [GIF](../../docs/assets/quickstart.gif) and [poster](../../docs/assets/quickstart-poster.png) from the same export.
 
-The illustrated seek track does not claim support for a particular player's private playback data. The film explicitly states that seeking requires an exposed accessibility slider and that YouTube Music must be installed as a Chrome web app. It is an illustrated product film, not an app latency benchmark.
-
-## Third-party runtime
-
-`composition/gsap.min.js` is GSAP 3.14.2, bundled by OpenDesign. Its original GreenSock copyright, author and [license notice](https://gsap.com/standard-license) are retained in the file. Fonts use system font stacks; font files are not redistributed.
+No cloud media-generation API, personal desktop footage, credentials or remote fonts are needed. Bundled third-party runtimes retain their original copyright and license notices.

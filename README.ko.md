@@ -8,12 +8,12 @@
 
 <picture>
   <source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/quickstart-poster.png">
-  <img src="docs/assets/quickstart.gif" alt="빌드, 손쉬운 사용 허용, Option 조절, 페이지 전환, 기능 추가·크기 조절·제거, 음악 앱 선택을 설명하는 30초 모션그래픽" width="960">
+  <img src="docs/assets/quickstart.gif" alt="밝기·볼륨 조절, 두 페이지, 기능 추가 미리보기·크기 조절·제거, 음악 앱 설정을 보여주는 실제 SwiftUI 화면의 30초 영상" width="960">
 </picture>
 
 [30초 MP4 보기·다운로드](docs/assets/quickstart.mp4) · [정지 이미지](docs/assets/quickstart-poster.png)
 
-[OpenDesign](https://open-design.ai/solutions/video/) MCP와 HyperFrames로 제작한 30초 제품 영상입니다. 영어 제목과 한국어 자막이 포함되어 있습니다. 동작 줄이기를 설정한 브라우저에서는 정지 이미지를 표시합니다. 앱의 현재 인터페이스는 한국어입니다.
+실제 SwiftUI 화면을 캡처하고 [OpenDesign](https://open-design.ai/solutions/video/) MCP와 HyperFrames로 편집한 자막 없는 30초 영상입니다. 별도 프로세스에서 미리보기 입력으로 렌더링하며, 실제 밝기·볼륨이나 개인 설정을 바꾸지 않습니다. 동작 줄이기를 설정한 브라우저에서는 정지 이미지를 표시합니다. 앱의 현재 인터페이스는 한국어입니다.
 
 ## 빌드하고 실행하기
 
