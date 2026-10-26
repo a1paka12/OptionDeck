@@ -1,0 +1,28 @@
+# Build artifacts and local exports
+.build/
+.swiftpm/
+engine/target/
+dist/
+previews/
+.DS_Store
+
+# Local work notes and diagnostic captures
+task.md
+implementation_plan.md
+system_architecture.md
+.research/
+*.log
+*.trace
+*.dmp
+
+# Credentials, signing material, local settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.mobileprovision
+settings.json
+settings.lock
