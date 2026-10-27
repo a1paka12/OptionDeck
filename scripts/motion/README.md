@@ -1,6 +1,6 @@
 # Native UI film
 
-The 30-second README video uses the actual `DeckView` and `DeckSettingsView` from this repository. OpenDesign MCP / HyperFrames composes the native capture into the final film. There are no added captions or subtitles; Korean text belongs to the app itself.
+The 30-second README video uses the actual `DeckView` and `DeckSettingsView` from this repository. OpenDesign MCP / HyperFrames composes the native capture into a warm editorial film with a separate illustrated Option key and camera moves timed to the real UI. There are no added captions or subtitles; Korean text belongs to the app itself.
 
 The capture runs offscreen in a separate process. It uses scripted preview values for brightness and volume and the editor's real insertion, resize, removal and Rust layout functions. It does not activate windows, send global mouse/keyboard events, change device settings, start playback, or save personal preferences. This is a native UI preview, rather than a recording of physical trackpad input. Personal settings are replaced with the public defaults only in temporary capture sources.
 

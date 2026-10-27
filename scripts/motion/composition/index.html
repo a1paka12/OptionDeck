@@ -1,94 +1,58 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="od-motion-output" content="video">
-<meta name="od-motion-audio" content="silent">
-<title>OptionDeck — Native UI</title>
-<link rel="alternate" type="video/mp4" href="../../../docs/assets/quickstart.mp4">
-<link rel="image_src" href="../../../docs/assets/quickstart-poster.png">
-<script src="./gsap.min.js"></script>
+<html lang="en"><head><meta charset="utf-8"><meta name="od-motion-output" content="video"><meta name="od-motion-audio" content="silent"><meta name="viewport" content="width=1920,height=1080"><link rel="alternate" type="video/mp4" href="../../../docs/assets/quickstart.mp4"><script src="./gsap.min.js"></script>
 <style>
-:root{--ground:#090c10;--stage-w:1920px;--stage-h:1080px;--panel-w:1200px;--panel-h:811.7647058824px;--surface-shadow:0 20px 64px #0007,0 0 32px #ffffff04;}
-*{box-sizing:border-box}html,body{margin:0;width:var(--stage-w);height:var(--stage-h);overflow:hidden;background:var(--ground)}
-#main{width:var(--stage-w);height:var(--stage-h);display:grid;place-items:center;background:var(--ground);isolation:isolate}
-#viewport{position:relative;width:var(--panel-w);height:var(--panel-h);overflow:hidden;border-radius:48px;box-shadow:var(--surface-shadow);grid-area:1/1}
-#native-surface{position:absolute;left:0;top:0;width:2000px;height:1480px;transform-origin:0 0}
-#native-capture{display:block;width:2000px;height:1480px;max-width:none;object-fit:contain;background:var(--ground)}
-#static-poster{display:none;width:1920px;height:1080px;grid-area:1/1;object-fit:contain}
-body.static #viewport{visibility:hidden}body.static #static-poster{display:block}
-</style>
-</head>
-<body>
-<main id="main" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080" data-fps="30" data-poster-time="3" aria-label="OptionDeck native SwiftUI preview">
-<div id="viewport"><div id="native-surface">
-<video id="native-capture" class="clip" src="./assets/native-ui.mp4" data-start="0" data-duration="30" data-media-start="0" data-track-index="0" data-volume="0" muted playsinline preload="auto" aria-label="Unaltered native OptionDeck recording"></video>
-</div></div>
-<img id="static-poster" src="../../../docs/assets/quickstart-poster.png" width="1920" height="1080" alt="Actual native OptionDeck first-page interface">
-</main>
-<script>
-// Source pixels: 2000 x 1480, 450 native frames at 15 fps; no UI recreation.
-// Panel-only bounds in those pixels: x=320, y=280, width=1360, height=920.
-// Full editor retains the entire 2000 x 1480 recording at 1350 x 999.
-const CONFIG=Object.freeze({duration:30,fps:30,sourceFps:15,width:1920,height:1080,
- panel:{width:1200,height:1200*920/1360,scale:1200/1360,x:-320*1200/1360,y:-280*1200/1360,radius:48},
- editor:{width:1350,height:999,scale:.675,x:0,y:0,radius:0},
- transitions:{toEditor:11.45,toEditorDuration:.55,toPanel:28,toPanelDuration:.55}});
-const tl=gsap.timeline({paused:true});
-const clock={t:0};
-const panel=CONFIG.panel,editor=CONFIG.editor;
-gsap.set('#viewport',{width:panel.width,height:panel.height,borderRadius:panel.radius});
-gsap.set('#native-surface',{x:panel.x,y:panel.y,scale:panel.scale,transformOrigin:'0 0'});
-tl.to(clock,{t:CONFIG.duration,duration:CONFIG.duration,ease:'none'},0);
-tl.to('#viewport',{width:editor.width,height:editor.height,borderRadius:editor.radius,duration:.55,ease:'power2.inOut'},11.45);
-tl.to('#native-surface',{x:editor.x,y:editor.y,scale:editor.scale,duration:.55,ease:'power2.inOut'},11.45);
-tl.to('#viewport',{width:panel.width,height:panel.height,borderRadius:panel.radius,duration:.55,ease:'power2.inOut'},28);
-tl.to('#native-surface',{x:panel.x,y:panel.y,scale:panel.scale,duration:.55,ease:'power2.inOut'},28);
+:root{--ivory:#f4f1ea;--stone:#e7e1d6;--ink:#292a29;--blue:#969db6}*{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--ivory)}#main{position:relative;width:1920px;height:1080px;overflow:hidden;background:linear-gradient(133deg,#faf8f3 0%,#eeeae1 52%,#ded8ce 100%)}
+.surface{position:absolute;inset:0;background:radial-gradient(ellipse at 15% 5%,rgba(255,255,255,.78),transparent 52%),linear-gradient(115deg,transparent 55%,rgba(114,103,86,.09));}
+.plane{position:absolute;left:76px;top:142px;width:600px;height:786px;border:1px solid rgba(92,85,76,.12);border-radius:34px;background:linear-gradient(142deg,rgba(255,255,255,.35),rgba(210,204,193,.08));box-shadow:inset 0 2px 4px rgba(255,255,255,.8),0 18px 60px rgba(83,73,61,.06);transform:rotate(-4deg)}
+.key{z-index:1;position:absolute;left:115px;top:650px;width:258px;height:202px;filter:drop-shadow(0 22px 20px rgba(56,47,38,.2));transform-origin:50% 50%;}
+.key .rim{position:absolute;inset:0;border-radius:37px;background:linear-gradient(150deg,#f6f5f0 0%,#c9c8c1 56%,#a8a69f 100%);box-shadow:inset 0 1px 3px #fff, inset 0 -8px 7px rgba(63,62,58,.19)}
+.key .cap{position:absolute;inset:7px 8px 15px;border-radius:30px;background:linear-gradient(150deg,#f3f2ed,#d8d8d2);border:1px solid rgba(255,255,255,.65);box-shadow:inset 0 2px 6px rgba(255,255,255,.9),0 3px 5px rgba(68,65,61,.14);display:flex;align-items:center;justify-content:center;color:#555752;font:500 75px -apple-system,BlinkMacSystemFont,sans-serif;}
+.panel-shot,.editor-shot{z-index:2;position:absolute;overflow:hidden;transform-origin:50% 50%;box-shadow:0 34px 70px rgba(35,31,27,.25),0 4px 12px rgba(35,31,27,.15);outline:1px solid rgba(30,30,30,.35);background:#1b1b1c}
+.panel-shot{width:1360px;height:920px;left:420px;top:80px;border-radius:18px}.panel-shot video{position:absolute;left:-320px;top:-280px;width:2000px;height:1480px;max-width:none}
+.editor-shot{width:2000px;height:1480px;left:-40px;top:-200px;transform:scale(.67);border-radius:20px}.editor-shot video{width:2000px;height:1480px;display:block}
+.endmark{position:absolute;left:145px;top:250px;color:var(--ink);font:600 68px -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-.035em;opacity:0}
+</style></head><body>
+<div id="main" data-composition-id="main" data-start="0" data-duration="30" data-width="1920" data-height="1080" data-fps="30" data-poster-time="29">
+<div class="surface"></div><div class="plane"></div>
+<div class="panel-shot"><video class="clip" data-start="0" data-duration="30" data-track-index="1" data-volume="0" src="./assets/native-ui.mp4" muted playsinline preload="auto"></video></div>
+<div class="editor-shot"><video class="clip" data-start="0" data-duration="30" data-track-index="2" data-volume="0" src="./assets/native-ui.mp4" muted playsinline preload="auto"></video></div>
+<div class="key"><div class="rim"></div><div class="cap">⌥</div></div><div class="endmark">OptionDeck</div>
+</div><script>
+const tl=gsap.timeline({paused:true}); const clock={t:0};tl.to(clock,{t:30,duration:30,ease:'none'},0);
+gsap.set('.editor-shot',{opacity:0});gsap.set('.panel-shot',{x:85,y:0,scale:.88,opacity:1});gsap.set('.key',{scale:1.55,x:45,y:-180,rotation:-8});
+tl.to('.key',{scale:1.43,y:-165,duration:.28,ease:'power2.in'},.25).to('.key',{scale:.75,x:0,y:0,rotation:-4,duration:1,ease:'power3.out'},.55)
+ .fromTo('.panel-shot',{scale:1.17,x:330,y:45,opacity:0},{scale:1.17,x:170,y:45,opacity:1,duration:.65,ease:'power3.out'},.38)
+ .to('.panel-shot',{scale:.88,x:0,y:0,duration:1.05,ease:'power3.inOut'},2.45)
+ .to('.panel-shot',{scale:1.12,x:-170,y:50,duration:.65,ease:'power3.inOut'},4.65)
+ .to('.panel-shot',{scale:.88,x:0,y:0,duration:.8,ease:'power3.inOut'},6.3)
+ .to('.panel-shot',{x:-105,scale:.96,duration:.55,ease:'power3.inOut'},8)
+ .to('.panel-shot',{x:0,scale:.88,duration:.7,ease:'power3.out'},9.7)
+ .to('.key',{opacity:0,duration:.3},11.7).to('.panel-shot',{opacity:0,x:-110,duration:.35,ease:'power2.in'},11.8)
+ .fromTo('.editor-shot',{opacity:0,x:80,scale:.67},{opacity:1,x:0,scale:.67,duration:.45,ease:'power3.out'},11.85)
+ .to('.editor-shot',{scale:.83,x:-65,y:15,duration:.7,ease:'power3.inOut'},14)
+ .to('.editor-shot',{scale:.72,x:65,y:-10,duration:.55,ease:'power3.inOut'},16.1)
+ .to('.editor-shot',{scale:.79,x:-20,y:0,duration:.65,ease:'power3.inOut'},18)
+ .to('.editor-shot',{scale:.68,x:0,y:0,duration:.65,ease:'power3.inOut'},20)
+ .to('.editor-shot',{scale:.72,x:-30,duration:.5,ease:'power3.inOut'},23)
+ .to('.editor-shot',{scale:.88,x:-150,y:30,duration:.65,ease:'power3.inOut'},25)
+ .to('.editor-shot',{opacity:0,x:-100,duration:.3,ease:'power2.in'},27.8)
+ .fromTo('.panel-shot',{opacity:0,x:120,scale:.82},{opacity:1,x:30,scale:.82,duration:.45,ease:'power3.out'},27.8)
+ .fromTo('.key',{opacity:0,scale:.7,x:0,y:0},{opacity:1,scale:.7,x:0,y:0,duration:.5,ease:'power2.out',immediateRender:false},28)
+ .to('.endmark',{opacity:1,duration:.5,ease:'power2.out'},28.5);
+tl.to('.key',{opacity:0,duration:.25,ease:'power2.out'},4.35);
+tl.to('.key',{opacity:1,duration:.25,ease:'power2.out'},7.05);
 window.__timelines={main:tl};
-window.OPTIONDECK_CONFIG=CONFIG;
-// Export: HyperFrames extracts and injects source video frames at each timeline time.
-// Do not drive currentTime or play the video in render mode.
-// Preview: use the shared timeline; seek the paused native video to its honest 15 fps cadence.
-(function nativePreview(){
- if(window.__odMotionRender)return;
- const video=document.getElementById('native-capture');
- const reduced=matchMedia('(prefers-reduced-motion: reduce)');
- const thumbnail=window.__odMotionThumbnail===true||new URL(location.href).searchParams.get('odMotionThumbnail')==='1';
- let pending=null,requested=-1;
- function target(t){return Math.min(449,Math.max(0,Math.floor((t+1e-7)*15)))/15;}
- function requestFrame(t){
-  const wanted=target(t);
-  if(video.readyState<1||video.seeking){pending=wanted;return;}
-  if(requested!==wanted){requested=wanted;video.currentTime=wanted;}
- }
- video.addEventListener('seeked',()=>{if(pending!==null){const t=pending;pending=null;requestFrame(t);}});
- function paint(){if(!document.body.classList.contains('static'))requestFrame(tl.time());requestAnimationFrame(paint);}
- requestAnimationFrame(paint);
- window.seek=async function(seconds){
-  const t=Math.max(0,Math.min(30,Number(seconds)||0));
-  document.body.classList.remove('static');
-  if(window.__odMotionPlayer)window.__odMotionPlayer.seek(t);else tl.pause().seek(t,true);
-  if(video.readyState<1)await new Promise(resolve=>video.addEventListener('loadedmetadata',resolve,{once:true}));
-  const wanted=target(t);
-  pending=null;
-  if(video.seeking)await new Promise(resolve=>video.addEventListener('seeked',resolve,{once:true}));
-  if(Math.abs(video.currentTime-wanted)>.00001){
-   await new Promise(resolve=>{video.addEventListener('seeked',resolve,{once:true});requested=wanted;video.currentTime=wanted;});
+if (!window.__odMotionRender) {
+  const videos = document.querySelectorAll('video');
+  function syncPreview(){
+    const t = Math.min(29.933, Math.max(0, tl.time()));
+    videos.forEach(video => { if (video.readyState && Math.abs(video.currentTime-t) > .08 && !video.seeking) video.currentTime=t; });
+    requestAnimationFrame(syncPreview);
   }
-  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-  return {seconds:t,nativeFrame:Math.min(449,Math.floor((t+1e-7)*15))};
- };
- function staticMode(){if(window.__odMotionPlayer)window.__odMotionPlayer.pause();else tl.pause();document.body.classList.add('static');}
- function boot(){
-  if(reduced.matches||thumbnail){staticMode();requestAnimationFrame(staticMode);}
-  document.getElementById('main').addEventListener('click',()=>document.body.classList.remove('static'));
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
- reduced.addEventListener('change',()=>{if(reduced.matches)staticMode();});
-})();
+  syncPreview();
+}
 </script>
-<script data-od-motion-source-player="8">
+  <script data-od-motion-source-player="8">
 
 window.__odValidateMotionTimeline = function (root, tl) {
   var mode = document.querySelector('meta[name="od-motion-output"]');
@@ -145,7 +109,7 @@ function createMotionAudioSync(audio) {
     var thumbnail = window.__odMotionThumbnail === true || new URL(location.href).searchParams.get('odMotionThumbnail') === '1';
     var instance = Date.now().toString(36) + Math.random().toString(36).slice(2);
     var hostMuted = false;
-    var active = !hosted, playing = false, wantsPlay = true, pageActive = true, updateTimer = null;
+    var active = !hosted, playing = false, wantsPlay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches, pageActive = true, updateTimer = null;
     var applyPlayback = function () {};
     function requestActivity() { window.parent.postMessage({type:'od:motion-preview-request', id:instance, width:width, height:height}, '*'); }
     function onActivity(event) {
@@ -232,7 +196,7 @@ function createMotionAudioSync(audio) {
         if (blocked) { tracks.forEach(function (track) { track.blocked = false; }); notice(''); if (playing) syncAudio(tl.time(), true, true); else play(); }
         else if (playing) pause(); else play();
       });
-      tl.seek(0, false); applyPlayback();
+      tl.seek(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 29 : 0, false); applyPlayback();
       function update() {
         if (!stage.isConnected) { active = false; applyPlayback(); return; }
         if (!active || !pageActive || !playing) return;
@@ -252,8 +216,5 @@ function createMotionAudioSync(audio) {
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, {once:true}); else boot();
 })();
-</script>
-<!-- Native capture provenance: ../../inputs/capture.json. No subtitles, captions, translations,
-extra wordmark, controls, cursor overlays, fabricated progress or simulated widgets are authored.
-The recorded Korean interface is preserved. The preview is not a filmed hardware test. -->
-</body></html>
+</script></body>
+</html>
