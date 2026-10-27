@@ -1,3 +1,4 @@
+import DeckCore
 import AppKit
 import SwiftUI
 
@@ -22,7 +23,7 @@ func writeAppIcon(to path: String) throws {
             guard let image = renderer.nsImage, let tiff = image.tiffRepresentation,
                   let bitmap = NSBitmapImageRep(data: tiff),
                   let png = bitmap.representation(using: .png, properties: [:]) else {
-                throw ScriptFailure.failed("앱 아이콘 생성 실패")
+                throw ScriptFailure.failed(L("앱 아이콘 생성 실패"))
             }
             try png.write(to: directory.appendingPathComponent("icon_\(size)x\(size)\(scale == 2 ? "@2x" : "").png"))
         }

@@ -64,6 +64,12 @@ final class AppController: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
         buildMenu()
+        model.onLanguageChange = { [weak self] in
+            guard let self else { return }
+            self.buildMenu()
+            self.settingsWindow?.title = L("OptionDeck 설정")
+            self.panel?.setAccessibilityLabel(L("OptionDeck 조절 패널"))
+        }
         model.rawAvailable = ODTrackpadStart(contactCallback)
         model.onMusicSettings = { [weak self] in
             self?.showSettings(); self?.model.settingsTab = 3
@@ -99,17 +105,17 @@ final class AppController: NSObject, NSApplicationDelegate {
     }
 
     private func buildMenu() {
-        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        let item = statusItem ?? NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         item.button?.image = NSImage(systemSymbolName: "option", accessibilityDescription: "OptionDeck")
         let menu = NSMenu()
         let title = NSMenuItem(title: "OptionDeck", action: nil, keyEquivalent: "")
         title.isEnabled = false; menu.addItem(title)
-        for (title, selector) in [("앱 및 배치 설정…", #selector(showSettings)), ("조절 패널 열기", #selector(showPreview)), ("입력 권한 및 사용 방법…", #selector(showSetup))] {
+        for (title, selector) in [(L("앱 및 배치 설정…"), #selector(showSettings)), (L("조절 패널 열기"), #selector(showPreview)), (L("입력 권한 및 사용 방법…"), #selector(showSetup))] {
             let entry = NSMenuItem(title: title, action: selector, keyEquivalent: "")
             entry.target = self; menu.addItem(entry)
         }
         menu.addItem(.separator())
-        let quit = NSMenuItem(title: "OptionDeck 종료", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        let quit = NSMenuItem(title: L("OptionDeck 종료"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         menu.addItem(quit)
         item.menu = menu; statusItem = item
     }
@@ -206,7 +212,7 @@ final class AppController: NSObject, NSApplicationDelegate {
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .ignoresCycle]
         panel.isMovableByWindowBackground = false
         panel.contentView = NSHostingView(rootView: DeckView(model: model))
-        panel.setAccessibilityLabel("OptionDeck 조절 패널")
+        panel.setAccessibilityLabel(L("OptionDeck 조절 패널"))
         return panel
     }
 
@@ -262,7 +268,7 @@ final class AppController: NSObject, NSApplicationDelegate {
         if settingsWindow == nil {
             let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1000, height: 740),
                                   styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
-            window.title = "OptionDeck 설정"; window.isReleasedWhenClosed = false
+            window.title = L("OptionDeck 설정"); window.isReleasedWhenClosed = false
             window.minSize = NSSize(width: 980, height: 700)
             window.contentView = NSHostingView(rootView: DeckSettingsView(model: model))
             window.center(); settingsWindow = window
@@ -319,7 +325,7 @@ final class AppController: NSObject, NSApplicationDelegate {
                       let tiff = image.tiffRepresentation,
                       let bitmap = NSBitmapImageRep(data: tiff),
                       let png = bitmap.representation(using: .png, properties: [:]) else {
-                    throw ScriptFailure.failed("미리보기 이미지를 만들지 못했어요")
+                    throw ScriptFailure.failed(L("미리보기 이미지를 만들지 못했어요"))
                 }
                 try png.write(to: output.appendingPathComponent("page-\(page + 1)-\(dark ? "dark" : "light").png"))
             }
@@ -365,26 +371,26 @@ private struct SetupView: View {
             Image(systemName: "option").font(.system(size: 32, weight: .medium))
                 .frame(width: 64, height: 64).background(.blue.opacity(0.1), in: RoundedRectangle(cornerRadius: 18))
             VStack(alignment: .leading, spacing: 7) {
-                Text("손끝에서, 바로.").font(.system(size: 27, weight: .bold))
-                Text("Option을 누르는 동안 트랙패드가\n나만의 조절판으로 바뀝니다.")
+                Text(L("손끝에서, 바로.")).font(.system(size: 27, weight: .bold))
+                Text(L("Option을 누르는 동안 트랙패드가\n나만의 조절판으로 바뀝니다."))
                     .font(.system(size: 14)).foregroundStyle(.secondary).lineSpacing(3)
             }
             VStack(alignment: .leading, spacing: 13) {
-                Label("한 손가락으로 위치를 골라 위아래로 조절", systemImage: "hand.point.up")
-                Label("두 손가락을 좌우로 밀어 페이지 전환", systemImage: "hand.draw")
-                Label("Option을 놓으면 원래 작업으로", systemImage: "arrow.uturn.backward")
+                Label(L("한 손가락으로 위치를 골라 위아래로 조절"), systemImage: "hand.point.up")
+                Label(L("두 손가락을 좌우로 밀어 페이지 전환"), systemImage: "hand.draw")
+                Label(L("Option을 놓으면 원래 작업으로"), systemImage: "arrow.uturn.backward")
             }.font(.system(size: 12))
             Divider()
             HStack(spacing: 9) {
                 Image(systemName: model.inputReady ? "checkmark.circle.fill" : "lock.shield")
                     .foregroundStyle(model.inputReady ? .green : .secondary)
-                Text(model.inputReady ? "입력 준비 완료" : "전역 입력과 선택한 앱의 메뉴를 읽으려면 손쉬운 사용 권한이 필요해요")
+                Text(model.inputReady ? L("입력 준비 완료") : L("전역 입력과 선택한 앱의 메뉴를 읽으려면 손쉬운 사용 권한이 필요해요"))
                     .font(.system(size: 11)).foregroundStyle(.secondary)
             }
             HStack {
-                Button("패널 둘러보기") { AppController.shared.showPreview() }
+                Button(L("패널 둘러보기")) { AppController.shared.showPreview() }
                 Spacer()
-                Button(model.inputReady ? "시작하기" : "권한 설정 열기") {
+                Button(model.inputReady ? L("시작하기") : L("권한 설정 열기")) {
                     if model.inputReady { NSApp.keyWindow?.close() }
                     else {
                         _ = ODRequestAccessibility()

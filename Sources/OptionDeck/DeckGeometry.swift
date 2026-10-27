@@ -54,10 +54,10 @@ enum LayoutEngine {
     private struct Response: Decodable { let layout: PackedDeckPage?; let error: String? }
     private static func perform(_ request: Request) throws -> PackedDeckPage {
         let json = String(decoding: try JSONEncoder().encode(request), as: UTF8.self)
-        guard let pointer = json.withCString({ od_layout_request($0) }) else { throw SettingsError(message: "배치 엔진이 응답하지 않았어요") }
+        guard let pointer = json.withCString({ od_layout_request($0) }) else { throw SettingsError(message: L("배치 엔진이 응답하지 않았어요")) }
         defer { od_engine_free(pointer) }
         let response = try JSONDecoder().decode(Response.self, from: Data(String(cString: pointer).utf8))
-        guard let layout = response.layout else { throw SettingsError(message: response.error ?? "배치를 계산하지 못했어요") }
+        guard let layout = response.layout else { throw SettingsError(message: response.error ?? L("배치를 계산하지 못했어요")) }
         return layout
     }
     static func pack(_ tiles: [DeckTile]) throws -> PackedDeckPage { try perform(.init(op: "pack", tiles: tiles)) }

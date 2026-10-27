@@ -16,7 +16,7 @@ struct MediaWidgetView: View {
                     }.font(.system(size: 12, weight: .semibold))
                 }.buttonStyle(.plain).frame(width: rect.width - 64, alignment: .leading).position(x: (rect.width - 40) / 2, y: 22)
                 Button { model.tap(.systemMedia) } label: { Image(systemName: "slider.horizontal.3") }
-                    .buttonStyle(.plain).position(x: rect.width - 22, y: 22).accessibilityLabel("시스템 재생바 열기")
+                    .buttonStyle(.plain).position(x: rect.width - 22, y: 22).accessibilityLabel(L("시스템 재생바 열기"))
             }
             let seek = MediaWidgetLayout.seek(in: .init(0, 0, rect.width, rect.height))
             let fraction = model.pendingSeek ?? model.mediaProgress?.fraction ?? 0
@@ -32,13 +32,13 @@ struct MediaWidgetView: View {
                 .gesture(DragGesture(minimumDistance: 0).onChanged { value in model.queueSeek(value.location.x / seek.width) })
                 .allowsHitTesting(model.mediaProgress?.canSeek == true)
                 .position(x: seek.x + seek.width / 2, y: seek.y + seek.height / 2)
-                .accessibilityElement(children: .ignore).accessibilityLabel("재생 위치")
-                .accessibilityValue(model.mediaProgress?.label ?? "정보 없음")
+                .accessibilityElement(children: .ignore).accessibilityLabel(L("재생 위치"))
+                .accessibilityValue(model.mediaProgress?.label ?? L("정보 없음"))
                 .accessibilityAdjustableAction { direction in
                     if let progress = model.mediaProgress { model.queueSeek(progress.fraction + (direction == .increment ? 0.02 : -0.02)) }
                 }
             if rect.height > 120 {
-                Text(model.mediaProgress.map { $0.label.isEmpty ? "재생 위치" : $0.label } ?? "재생 중인 곡의 위치를 읽을 수 없어요")
+                Text(model.mediaProgress.map { $0.label.isEmpty ? L("재생 위치") : $0.label } ?? L("재생 중인 곡의 위치를 읽을 수 없어요"))
                     .font(.system(size: 9)).foregroundStyle(.secondary).lineLimit(1)
                     .frame(width: rect.width - 24, alignment: .leading).position(x: rect.width / 2, y: seek.y + 26)
             }

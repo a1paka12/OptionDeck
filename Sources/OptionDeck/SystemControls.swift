@@ -105,15 +105,15 @@ final class SystemControls {
     }
 
     func sendShortcut(_ hint: MenuShortcut, to bundleIdentifier: String) async -> String? {
-        guard AXIsProcessTrusted() else { return "메뉴를 실행하려면 손쉬운 사용 권한이 필요해요" }
-        guard let app = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first(where: { $0.processIdentifier == hint.pid }) else { return "앱이 재실행됐어요. 단축키를 새로고침해 주세요" }
+        guard AXIsProcessTrusted() else { return L("메뉴를 실행하려면 손쉬운 사용 권한이 필요해요") }
+        guard let app = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first(where: { $0.processIdentifier == hint.pid }) else { return L("앱이 재실행됐어요. 단축키를 새로고침해 주세요") }
         app.activate()
         for _ in 0..<20 {
             if NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier { break }
             try? await Task.sleep(for: .milliseconds(50))
         }
         guard NSWorkspace.shared.frontmostApplication?.processIdentifier == app.processIdentifier else {
-            return "선택한 앱이 활성화되지 않아 명령을 보내지 않았어요"
+            return L("선택한 앱이 활성화되지 않아 명령을 보내지 않았어요")
         }
         return await Task.detached(priority: .userInitiated) { MenuShortcutReader.perform(hint) }.value
     }

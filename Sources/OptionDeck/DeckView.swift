@@ -36,22 +36,22 @@ struct DeckView: View {
                 .frame(width: 34, height: 34).background(.primary.opacity(0.07), in: RoundedRectangle(cornerRadius: 10))
             VStack(alignment: .leading, spacing: 1) {
                 Text("OptionDeck").font(.system(size: 14, weight: .semibold))
-                Text(model.page == 0 ? "밝기 · 볼륨 · 시스템 미디어" : "앱 · 기능 바로가기")
+                Text(model.page == 0 ? L("밝기 · 볼륨 · 시스템 미디어") : L("앱 · 기능 바로가기"))
                     .font(.system(size: 10)).foregroundStyle(.secondary)
             }
             Spacer()
-            Text(model.preview ? "미리보기" : "⌥ 누르는 동안").font(.system(size: 11)).foregroundStyle(.secondary)
+            Text(model.preview ? L("미리보기") : L("⌥ 누르는 동안")).font(.system(size: 11)).foregroundStyle(.secondary)
             Text("\(model.page + 1) / 2").font(.system(size: 11).monospacedDigit()).foregroundStyle(.tertiary).padding(.horizontal, 8)
             Button { model.onMusicSettings?() } label: {
                 Image(systemName: "music.note").frame(width: 25, height: 25)
-            }.buttonStyle(.plain).accessibilityLabel("음악 앱 선택")
+            }.buttonStyle(.plain).accessibilityLabel(L("음악 앱 선택"))
             Button { model.onSettings?() } label: {
                 Image(systemName: "gearshape").frame(width: 25, height: 25)
-            }.buttonStyle(.plain).accessibilityLabel("앱 및 배치 설정")
+            }.buttonStyle(.plain).accessibilityLabel(L("앱 및 배치 설정"))
             Button { model.onClose?() } label: {
                 Image(systemName: "xmark").font(.system(size: 10, weight: .semibold))
                     .frame(width: 25, height: 25).background(.primary.opacity(0.06), in: Circle())
-            }.buttonStyle(.plain).accessibilityLabel("패널 닫기")
+            }.buttonStyle(.plain).accessibilityLabel(L("패널 닫기"))
         }
     }
     private var devicePage: some View {
@@ -65,7 +65,7 @@ struct DeckView: View {
                            available: control == .brightness ? model.brightnessAvailable : model.volumeAvailable, compact: rect.height < 150)
                     .frame(width: rect.width, height: rect.height).position(x: rect.x + rect.width / 2, y: rect.y + rect.height / 2)
                 if control == .volume {
-                    controlButton(.mute, symbol: model.muted ? "speaker.slash.fill" : "speaker.wave.2", label: "음소거",
+                    controlButton(.mute, symbol: model.muted ? "speaker.slash.fill" : "speaker.wave.2", label: L("음소거"),
                                   rect: DeckGeometry.muteRect(rect), enabled: model.muteAvailable)
                 }
                 }
@@ -76,9 +76,9 @@ struct DeckView: View {
                 if feature.isMediaWidget {
                     MediaWidgetView(model: model, rect: rect).position(x: rect.x + rect.width / 2, y: rect.y + rect.height / 2)
                 } else if feature.kind != .empty {
-                controlButton(.feature(index), symbol: feature.symbol, label: feature.name, rect: rect)
+                controlButton(.feature(index), symbol: feature.symbol, label: feature.displayName, rect: rect)
                     .contextMenu {
-                        if feature.value == "playback" { Button("음악 앱 선택…") { model.onMusicSettings?() } }
+                        if feature.value == "playback" { Button(L("음악 앱 선택…")) { model.onMusicSettings?() } }
                     }
                 }
             }
@@ -94,7 +94,7 @@ struct DeckView: View {
                                value: control == .brightness ? model.brightness : model.volume,
                                available: control == .brightness ? model.brightnessAvailable : model.volumeAvailable, compact: rect.height < 150)
                         .frame(width: rect.width, height: rect.height).position(x: rect.x + rect.width/2, y: rect.y + rect.height/2)
-                    if control == .volume { controlButton(.mute, symbol: "speaker.slash", label: "음소거", rect: DeckGeometry.muteRect(rect), enabled: model.muteAvailable) }
+                    if control == .volume { controlButton(.mute, symbol: "speaker.slash", label: L("음소거"), rect: DeckGeometry.muteRect(rect), enabled: model.muteAvailable) }
                 }
             }
             ForEach(Array(model.favorites.enumerated()), id: \.offset) { index, app in
@@ -116,7 +116,7 @@ struct DeckView: View {
                         .background(ModuleBackground(highlighted: model.selectedLauncher == index))
                 }.buttonStyle(.plain).onHover { if $0 { model.focus(.launch(index)) } }
                     .position(x: rect.x + rect.width / 2, y: rect.y + rect.height / 2)
-                    .accessibilityHint("선택하면 아래에 이 앱의 단축키를 표시합니다")
+                    .accessibilityHint(L("선택하면 아래에 이 앱의 단축키를 표시합니다"))
                 }
             }
             ModuleBackground().frame(width: 640, height: 92).position(x: 340, y: 350)
@@ -128,11 +128,11 @@ struct DeckView: View {
             }.padding(.trailing, 80).frame(width: 606).position(x: 340, y: 317)
             Button { model.tap(.refreshShortcuts) } label: {
                 Image(systemName: "arrow.clockwise").frame(width: 30, height: 22)
-            }.buttonStyle(.plain).position(x: 591, y: 317).accessibilityLabel("앱 메뉴에서 다시 읽기")
+            }.buttonStyle(.plain).position(x: 591, y: 317).accessibilityLabel(L("앱 메뉴에서 다시 읽기"))
             Button { model.tap(.moreShortcuts) } label: {
                 Image(systemName: "chevron.right").frame(width: 32, height: 22)
             }.buttonStyle(.plain).disabled(model.shortcuts.count <= 4).position(x: 628, y: 317)
-                .accessibilityLabel("다른 메뉴 단축키 보기")
+                .accessibilityLabel(L("다른 메뉴 단축키 보기"))
             if model.visibleShortcuts.isEmpty {
                 Text(model.shortcutStatus).font(.system(size: 12)).foregroundStyle(.secondary)
                     .frame(width: 600, height: 52).position(x: 340, y: 360)
@@ -172,7 +172,7 @@ struct DeckView: View {
         HStack {
             Button { model.changePage(model.page - 1) } label: {
                 Image(systemName: "chevron.left").frame(width: 40, height: 30).background(.primary.opacity(0.06), in: Capsule())
-            }.buttonStyle(.plain).disabled(model.page == 0).accessibilityLabel("이전 페이지")
+            }.buttonStyle(.plain).disabled(model.page == 0).accessibilityLabel(L("이전 페이지"))
             Spacer()
             VStack(spacing: 5) {
                 Text(model.message ?? model.focusedTitle).font(.system(size: 11, weight: model.focused == nil ? .regular : .semibold))
@@ -182,13 +182,13 @@ struct DeckView: View {
                         Capsule().fill(model.page == page ? Color.primary.opacity(0.7) : Color.primary.opacity(0.18))
                             .frame(width: model.page == page ? 16 : 5, height: 4)
                     }
-                    Text("두 손가락 좌우로 페이지 전환").font(.system(size: 9)).foregroundStyle(.secondary).padding(.leading, 3)
+                    Text(L("두 손가락 좌우로 페이지 전환")).font(.system(size: 9)).foregroundStyle(.secondary).padding(.leading, 3)
                 }
             }
             Spacer()
             Button { model.changePage(model.page + 1) } label: {
                 Image(systemName: "chevron.right").frame(width: 40, height: 30).background(.primary.opacity(0.06), in: Capsule())
-            }.buttonStyle(.plain).disabled(model.page == 1).accessibilityLabel("다음 페이지")
+            }.buttonStyle(.plain).disabled(model.page == 1).accessibilityLabel(L("다음 페이지"))
         }
     }
 }
@@ -215,9 +215,9 @@ private struct DeviceTile: View {
                 VStack(alignment: .leading, spacing: compact ? 4 : 10) {
                     Image(systemName: symbol).font(.system(size: compact ? 18 : 26, weight: .medium))
                     Text(title).font(.system(size: compact ? 12 : 16, weight: .semibold))
-                    Text(available ? "\(Int((value * 100).rounded()))%" : "지원되지 않음")
+                    Text(available ? "\(Int((value * 100).rounded()))%" : L("지원되지 않음"))
                         .font(.system(size: available ? (compact ? 18 : 25) : 12, weight: .medium).monospacedDigit())
-                    if !compact { Text("위아래로 조절").font(.system(size: 10)).foregroundStyle(.secondary) }
+                    if !compact { Text(L("위아래로 조절")).font(.system(size: 10)).foregroundStyle(.secondary) }
                 }
                 ZStack(alignment: .bottom) {
                     Capsule().fill(.primary.opacity(0.1))
@@ -234,7 +234,7 @@ private struct DeviceTile: View {
                 previousTranslation = current
             }.onEnded { _ in previousTranslation = 0; model.focus(nil) })
             .accessibilityElement(children: .ignore).accessibilityLabel(title)
-            .accessibilityValue(available ? "\(Int(value * 100))퍼센트" : "지원되지 않음")
+            .accessibilityValue(available ? L("%@퍼센트", String(Int(value * 100))) : L("지원되지 않음"))
             .accessibilityAdjustableAction { model.adjust(control, by: $0 == .increment ? 0.05 : -0.05) }
     }
 }
@@ -251,15 +251,15 @@ private struct PanelMaterial: NSViewRepresentable {
 extension DeckControl {
     var title: String {
         switch self {
-        case .mute: "음소거"
-        case .brightness: "밝기"
-        case .volume: "볼륨"
-        case .previous: "이전"
-        case .playback: "재생 / 일시정지"
-        case .next: "다음"
-        case .systemMedia: "제어 센터 재생바"
-        case .backwardSkip: "15초 뒤로"
-        case .forwardSkip: "15초 앞으로"
+        case .mute: L("음소거")
+        case .brightness: L("밝기")
+        case .volume: L("볼륨")
+        case .previous: L("이전")
+        case .playback: L("재생 / 일시정지")
+        case .next: L("다음")
+        case .systemMedia: L("제어 센터 재생바")
+        case .backwardSkip: L("15초 뒤로")
+        case .forwardSkip: L("15초 앞으로")
         default: ""
         }
     }

@@ -13,7 +13,9 @@
 
 [30초 MP4 보기·다운로드](docs/assets/quickstart.mp4) · [정지 이미지](docs/assets/quickstart-poster.png)
 
-실제 SwiftUI 화면을 캡처하고 [OpenDesign](https://open-design.ai/solutions/video/) MCP와 HyperFrames로 편집한 자막 없는 30초 영상입니다. 별도 프로세스에서 미리보기 입력으로 렌더링하며, 실제 밝기·볼륨이나 개인 설정을 바꾸지 않습니다. 동작 줄이기를 설정한 브라우저에서는 정지 이미지를 표시합니다. 앱의 현재 인터페이스는 한국어입니다.
+실제 SwiftUI 화면을 캡처하고 [OpenDesign](https://open-design.ai/solutions/video/) MCP와 HyperFrames로 편집한 자막 없는 30초 영상입니다. 별도 프로세스에서 미리보기 입력으로 렌더링하며, 실제 밝기·볼륨이나 개인 설정을 바꾸지 않습니다. 동작 줄이기를 설정한 브라우저에서는 정지 이미지를 표시합니다. 영상은 한국어 화면을 보여주며 앱은 한국어와 영어를 지원합니다.
+
+**앱 및 배치 설정 → 언어 → 한국어 / English / 시스템 설정**을 선택한 뒤 **저장 및 적용**을 누르세요. 시스템 설정은 Mac의 선호 언어를 따릅니다. 다른 앱에서 읽은 단축키 이름은 해당 앱의 언어로 표시됩니다.
 
 ## 빌드하고 실행하기
 

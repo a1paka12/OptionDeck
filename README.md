@@ -13,7 +13,9 @@ Hold **Option (⌥)** to turn your Mac trackpad into a control surface. Adjust b
 
 [Watch or download the 30-second MP4](docs/assets/quickstart.mp4) · [Static preview](docs/assets/quickstart-poster.png)
 
-A caption-free, 30-second capture of the actual native SwiftUI interface, composed with [OpenDesign](https://open-design.ai/solutions/video/) MCP and HyperFrames. The UI is rendered offscreen with scripted preview inputs; device values and personal settings are not changed. The static preview is used when reduced motion is preferred. The app's current interface is in Korean; this README includes translations for its main controls.
+A caption-free, 30-second capture of the actual native SwiftUI interface, composed with [OpenDesign](https://open-design.ai/solutions/video/) MCP and HyperFrames. The UI is rendered offscreen with scripted preview inputs; device values and personal settings are not changed. The static preview is used when reduced motion is preferred. The film shows the Korean interface; the app supports English and Korean.
+
+Choose **Apps & Layout → Language → English / 한국어 / System Default**, then **Save & Apply**. System Default follows the Mac’s preferred language. Shortcuts read from other apps remain in those apps’ languages.
 
 ## Build and run
 

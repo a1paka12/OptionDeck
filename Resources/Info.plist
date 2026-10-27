@@ -4,6 +4,8 @@
     <key>CFBundleIdentifier</key><string>io.github.a1paka12.OptionDeck</string>
     <key>CFBundleName</key><string>OptionDeck</string>
     <key>CFBundleDisplayName</key><string>OptionDeck</string>
+    <key>CFBundleDevelopmentRegion</key><string>en</string>
+    <key>CFBundleLocalizations</key><array><string>en</string><string>ko</string></array>
     <key>CFBundleExecutable</key><string>OptionDeck</string>
     <key>CFBundleIconFile</key><string>AppIcon</string>
     <key>CFBundlePackageType</key><string>APPL</string>
@@ -12,6 +14,6 @@
     <key>LSMinimumSystemVersion</key><string>14.0</string>
     <key>LSUIElement</key><true/>
     <key>NSHighResolutionCapable</key><true/>
-    <key>NSInputMonitoringUsageDescription</key><string>Option을 누르는 동안 트랙패드 위치를 조절 패널에 대응시킵니다.</string>
+    <key>NSInputMonitoringUsageDescription</key><string>Maps trackpad positions to the control panel while holding Option.</string>
     <key>NSHumanReadableCopyright</key><string>OptionDeck — Local build</string>
 </dict></plist>

@@ -28,7 +28,13 @@ struct DeckFeature: Codable, Equatable {
     static func app(_ guide: LauncherGuide) -> DeckFeature {
         .init(kind: .app, value: guide.id, name: guide.name, path: guide.path)
     }
-    var guide: LauncherGuide? { kind == .app ? .init(id: value, name: name, path: path) : nil }
+    var displayName: String {
+        if kind == .builtin { return L(name) }
+        if kind == .app && ((value == "com.apple.Terminal" && name == "터미널") ||
+                            (value == "com.apple.VoiceMemos" && name == "음성 메모")) { return L(name) }
+        return name
+    }
+    var guide: LauncherGuide? { kind == .app ? .init(id: value, name: displayName, path: path) : nil }
     var control: DeckControl? {
         guard kind == .builtin else { return nil }
         return [DeckControl.previous, .playback, .next, .systemMedia, .backwardSkip, .forwardSkip, .mute].first { $0.featureKey == value }
@@ -77,16 +83,16 @@ final class FeatureRunner {
     func perform(_ feature: DeckFeature) async -> String? {
         switch feature.kind {
         case .app:
-            guard let url = feature.appURL else { return "앱을 찾지 못했어요. 설정에서 다시 할당해 주세요" }
+            guard let url = feature.appURL else { return L("앱을 찾지 못했어요. 설정에서 다시 할당해 주세요") }
             return await openApp(url)
         case .file:
-            guard FileManager.default.fileExists(atPath: feature.value) else { return "파일이나 폴더를 찾지 못했어요" }
-            return NSWorkspace.shared.open(URL(fileURLWithPath: feature.value)) ? nil : "파일을 열지 못했어요"
+            guard FileManager.default.fileExists(atPath: feature.value) else { return L("파일이나 폴더를 찾지 못했어요") }
+            return NSWorkspace.shared.open(URL(fileURLWithPath: feature.value)) ? nil : L("파일을 열지 못했어요")
         case .url:
-            guard let url = URL(string: feature.value), ["http", "https"].contains(url.scheme?.lowercased() ?? ""), url.host != nil else { return "웹사이트 주소를 확인해 주세요" }
-            return NSWorkspace.shared.open(url) ? nil : "웹사이트를 열지 못했어요"
+            guard let url = URL(string: feature.value), ["http", "https"].contains(url.scheme?.lowercased() ?? ""), url.host != nil else { return L("웹사이트 주소를 확인해 주세요") }
+            return NSWorkspace.shared.open(url) ? nil : L("웹사이트를 열지 못했어요")
         case .shortcut:
-            guard !runningShortcuts.contains(feature.value) else { return "이 단축어는 이미 실행 중이에요" }
+            guard !runningShortcuts.contains(feature.value) else { return L("이 단축어는 이미 실행 중이에요") }
             runningShortcuts.insert(feature.value)
             defer { runningShortcuts.remove(feature.value) }
             let process = Process()
@@ -97,9 +103,9 @@ final class FeatureRunner {
                 process.terminationHandler = { task in continuation.resume(returning: task.terminationStatus) }
                 do { try process.run() } catch { continuation.resume(returning: -1) }
             }
-            return status == 0 ? nil : "단축어를 실행하지 못했어요. 단축어 앱에서 이름과 권한을 확인해 주세요"
+            return status == 0 ? nil : L("단축어를 실행하지 못했어요. 단축어 앱에서 이름과 권한을 확인해 주세요")
         case .builtin:
-            guard feature.value == "screenshot", let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.screenshot.launcher") else { return "이 기능을 실행하지 못했어요" }
+            guard feature.value == "screenshot", let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.screenshot.launcher") else { return L("이 기능을 실행하지 못했어요") }
             return await openApp(url)
         case .empty: return nil
         }
@@ -107,7 +113,7 @@ final class FeatureRunner {
     private func openApp(_ url: URL) async -> String? {
         await withCheckedContinuation { continuation in
             NSWorkspace.shared.openApplication(at: url, configuration: .init()) { _, error in
-                continuation.resume(returning: error == nil ? nil : "앱을 실행하지 못했어요")
+                continuation.resume(returning: error == nil ? nil : L("앱을 실행하지 못했어요"))
             }
         }
     }

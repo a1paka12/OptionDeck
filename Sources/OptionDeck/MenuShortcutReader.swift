@@ -65,16 +65,16 @@ enum MenuShortcutReader {
     static func perform(_ shortcut: MenuShortcut) -> String? {
         let app = AXUIElementCreateApplication(shortcut.pid)
         AXUIElementSetMessagingTimeout(app, 0.25)
-        guard let raw = attribute(app, kAXMenuBarAttribute), CFGetTypeID(raw) == AXUIElementGetTypeID() else { return "선택한 앱의 메뉴를 읽지 못했어요" }
+        guard let raw = attribute(app, kAXMenuBarAttribute), CFGetTypeID(raw) == AXUIElementGetTypeID() else { return L("선택한 앱의 메뉴를 읽지 못했어요") }
         var node = unsafeDowncast(raw, to: AXUIElement.self)
         for index in shortcut.path {
             let items = children(node)
-            guard items.indices.contains(index) else { return "메뉴가 바뀌었어요. 단축키를 새로고침해 주세요" }
+            guard items.indices.contains(index) else { return L("메뉴가 바뀌었어요. 단축키를 새로고침해 주세요") }
             node = items[index]
         }
         guard attribute(node, kAXTitleAttribute) as? String == shortcut.title,
-              equivalent(node) == shortcut.keys else { return "메뉴가 바뀌었어요. 단축키를 새로고침해 주세요" }
-        guard attribute(node, kAXEnabledAttribute) as? Bool == true else { return "이 명령은 현재 앱 상태에서 사용할 수 없어요" }
-        return AXUIElementPerformAction(node, kAXPressAction as CFString) == .success ? nil : "앱이 메뉴 명령 실행을 허용하지 않았어요"
+              equivalent(node) == shortcut.keys else { return L("메뉴가 바뀌었어요. 단축키를 새로고침해 주세요") }
+        guard attribute(node, kAXEnabledAttribute) as? Bool == true else { return L("이 명령은 현재 앱 상태에서 사용할 수 없어요") }
+        return AXUIElementPerformAction(node, kAXPressAction as CFString) == .success ? nil : L("앱이 메뉴 명령 실행을 허용하지 않았어요")
     }
 }

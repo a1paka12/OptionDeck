@@ -1,3 +1,4 @@
+import DeckCore
 import Foundation
 import DeckEngineBridge
 
@@ -6,6 +7,8 @@ struct DeckSettings: Codable, Equatable {
     var devices: [Int] = [0, 1]
     var media: [Int] = Array(0..<6)
     var automatic_shortcuts = true
+    /// nil follows the system language; existing settings without this field remain valid.
+    var language: String?
     var layouts: DeckLayouts?
     var music_app: LauncherGuide?
     var media_features: [DeckFeature]?
@@ -65,12 +68,12 @@ enum SettingsEngine {
         let data = try JSONEncoder().encode(request)
         let json = String(decoding: data, as: UTF8.self)
         let pointer = path.withCString { path in json.withCString { od_engine_request(path, $0) } }
-        guard let pointer else { throw SettingsError(message: "Rust 엔진이 응답하지 않았어요") }
+        guard let pointer else { throw SettingsError(message: L("Rust 엔진이 응답하지 않았어요")) }
         defer { od_engine_free(pointer) }
         let response = try JSONDecoder().decode(Response.self, from: Data(String(cString: pointer).utf8))
         guard let document = response.document else {
-            let message = response.error ?? "설정을 읽지 못했어요"
-            throw SettingsError(message: message.hasPrefix("conflict:") ? "다른 창이나 프로세스에서 설정이 바뀌었어요. 다시 불러온 뒤 저장해 주세요." : message)
+            let message = response.error ?? L("설정을 읽지 못했어요")
+            throw SettingsError(message: message.hasPrefix("conflict:") ? L("다른 창이나 프로세스에서 설정이 바뀌었어요. 다시 불러온 뒤 저장해 주세요.") : message)
         }
         return document
     }

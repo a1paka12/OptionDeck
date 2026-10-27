@@ -14,11 +14,15 @@ pub struct App { pub id: String, pub name: String, pub path: Option<String> }
 #[serde(deny_unknown_fields)]
 pub struct Settings {
     pub apps: Vec<App>, pub devices: Vec<u8>, pub media: Vec<u8>, pub automatic_shortcuts: bool,
+    #[serde(default)] pub language: Option<Language>,
     #[serde(default)] pub layouts: Option<layout::Layouts>,
     #[serde(default)] pub music_app: Option<App>,
     #[serde(default)] pub media_features: Option<Vec<Feature>>,
     #[serde(default)] pub launcher_features: Option<Vec<Feature>>,
 }
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum Language { Ko, En }
 impl Default for Settings {
     fn default() -> Self {
         let apps = [("com.google.Chrome", "Chrome"), ("com.microsoft.VSCode", "VS Code"),
@@ -26,7 +30,7 @@ impl Default for Settings {
             ("com.apple.Terminal", "터미널"), ("com.apple.finder", "Finder"),
             ("com.apple.VoiceMemos", "음성 메모"), ("md.obsidian", "Obsidian")]
             .into_iter().map(|(id, name)| App { id: id.into(), name: name.into(), path: None }).collect();
-        Self { apps, devices: vec![0, 1], media: (0..6).collect(), automatic_shortcuts: true, media_features: None, launcher_features: None, music_app: None, layouts: None }
+        Self { apps, devices: vec![0, 1], media: (0..6).collect(), automatic_shortcuts: true, language: None, media_features: None, launcher_features: None, music_app: None, layouts: None }
     }
 }
 impl Settings {
@@ -266,9 +270,25 @@ mod tests {
     #[test] fn legacy_settings_without_optional_features_remain_readable() {
         let mut value = serde_json::to_value(Settings::default()).unwrap();
         let object = value.as_object_mut().unwrap();
-        for key in ["music_app", "media_features", "launcher_features", "layouts"] { object.remove(key); }
+        for key in ["music_app", "media_features", "launcher_features", "layouts", "language"] { object.remove(key); }
         let settings: Settings = serde_json::from_value(value).unwrap();
         settings.validate().unwrap(); assert_eq!(settings, Settings::default());
+    }
+    #[test] fn language_roundtrips_without_changing_layout_or_names() {
+        let path = path();
+        let mut settings = Settings::default();
+        settings.apps[0].name = "My own app".into();
+        settings.language = Some(Language::En);
+        transact(&path, Request::Save { expected_revision: 0, settings: settings.clone() }).unwrap();
+        let mut loaded = transact(&path, Request::Load).unwrap().settings;
+        assert_eq!(loaded, settings);
+        loaded.language = Some(Language::Ko);
+        transact(&path, Request::Save { expected_revision: 1, settings: loaded.clone() }).unwrap();
+        assert_eq!(transact(&path, Request::Load).unwrap().settings, loaded);
+        assert!(serde_json::from_value::<Settings>(serde_json::json!({
+            "apps": [], "devices": [], "media": [], "automatic_shortcuts": true, "language": "fr"
+        })).is_err());
+        fs::remove_dir_all(path.parent().unwrap()).unwrap();
     }
     #[test] fn dynamic_pages_can_add_and_remove_all_slots() {
         use feature::{Feature,FeatureKind};

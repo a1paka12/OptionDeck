@@ -11,6 +11,7 @@ app="dist/OptionDeck.app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 cp .build/release/OptionDeck "$app/Contents/MacOS/OptionDeck"
 cp Resources/Info.plist "$app/Contents/Info.plist"
+cp -R Resources/en.lproj Resources/ko.lproj "$app/Contents/Resources/"
 .build/release/OptionDeck --icon "$PWD/.build/OptionDeck.iconset"
 iconutil --convert icns --output "$app/Contents/Resources/AppIcon.icns" .build/OptionDeck.iconset
 codesign --force --sign - --identifier io.github.a1paka12.OptionDeck "$app"

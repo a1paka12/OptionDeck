@@ -13,7 +13,7 @@ enum ScriptFailure: LocalizedError {
 final class MediaController {
     private var openingPreferredApp = false
     var preferredApp: LauncherGuide?
-    var preferredAppName: String { preferredApp?.name ?? (defaultMusicAppURL == nil ? "음악 앱 선택" : "YouTube Music") }
+    var preferredAppName: String { preferredApp?.name ?? (defaultMusicAppURL == nil ? L("음악 앱 선택") : "YouTube Music") }
 
     var preferredAppURL: URL? {
         if let preferredApp {
@@ -68,19 +68,19 @@ final class MediaController {
     func perform(_ command: Int, beforeOpening: () -> Void) async -> String? {
         switch MediaRoute.select(command: command, outputActive: outputActive()) {
         case .system:
-            return ODMediaCommand(Int32(command)) ? nil : "현재 재생 앱이 이 조작을 지원하지 않아요"
+            return ODMediaCommand(Int32(command)) ? nil : L("현재 재생 앱이 이 조작을 지원하지 않아요")
         case .unavailable:
-            return "재생 중인 항목이 없어요. 재생 버튼으로 \(preferredAppName)을 열 수 있어요"
+            return L("재생 중인 항목이 없어요. 재생 버튼으로 %@을 열 수 있어요", preferredAppName)
         case .preferredApp:
             guard !openingPreferredApp else { return nil }
-            guard let url = preferredAppURL else { return "\(preferredAppName) 앱을 찾지 못했어요. 음악 앱 설정에서 다시 선택해 주세요" }
+            guard let url = preferredAppURL else { return L("%@ 앱을 찾지 못했어요. 음악 앱 설정에서 다시 선택해 주세요", preferredAppName) }
             openingPreferredApp = true
             defer { openingPreferredApp = false }
             beforeOpening()
             do {
                 _ = try await NSWorkspace.shared.openApplication(at: url, configuration: .init())
                 return nil
-            } catch { return "\(preferredAppName) 앱을 열지 못했어요" }
+            } catch { return L("%@ 앱을 열지 못했어요", preferredAppName) }
         }
     }
 }

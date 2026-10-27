@@ -30,11 +30,13 @@ final class DeckModel {
     var settingsTab = 0
     var onMusicSettings: (() -> Void)?
     var onSettings: (() -> Void)?
+    var onLanguageChange: (() -> Void)?
     private var lastAutomaticRefresh = 0.0
     init() {
         do {
             let document = try SettingsEngine.load()
             settings = document.settings; settingsRevision = document.revision
+            DeckLanguage.shared.set(settings.language)
             media.preferredApp = settings.music_app
             geometry = try DeckGeometry(settings: settings)
         } catch { settingsError = error.localizedDescription }
@@ -55,13 +57,20 @@ final class DeckModel {
         applySettings(try SettingsEngine.save(value, revision: revision))
     }
     private func applySettings(_ document: SettingsDocument) {
+        let previousLanguage = settings.language
         shortcutTask?.cancel(); shortcutTask = nil; _ = od_shortcut_advance(); pendingShortcut = nil; pendingFeature = nil; shortcutCache = [:]
         settings = document.settings; settingsRevision = document.revision; settingsError = nil
+        DeckLanguage.shared.set(settings.language)
         progressTask?.cancel(); progressTask = nil; seekTask?.cancel(); pendingSeek = nil; mediaProgress = nil; lastProgressRead = 0
         media.preferredApp = settings.music_app
         geometry = try? DeckGeometry(settings: settings)
         focused = nil; touchPoint = nil; shortcuts = []; shortcutPage = 0
         refresh(screen: NSScreen.main)
+        if previousLanguage != settings.language {
+            message = nil
+            shortcutStatus = L("선택한 앱의 메뉴를 읽는 중…")
+            onLanguageChange?()
+        }
     }
     func automaticShortcutRefresh(changedApp: String? = nil) {
         guard settings.automatic_shortcuts else { return }
@@ -91,7 +100,7 @@ final class DeckModel {
     var selectedLauncher = 0
     var shortcuts: [MenuShortcut] = []
     var shortcutPage = 0
-    var shortcutStatus = "선택한 앱의 메뉴를 읽는 중…"
+    var shortcutStatus = L("선택한 앱의 메뉴를 읽는 중…")
     let media = MediaController()
     let system = SystemControls()
     let haptics = Haptics()
@@ -104,10 +113,10 @@ final class DeckModel {
     private var shortcutCache: [String: (pid: Int32, time: Double, items: [MenuShortcut])] = [:]
 
     var selectedGuide: LauncherGuide {
-        guard settings.launcherFeatures.indices.contains(selectedLauncher) else { return .init(id: "", name: "빠른 동작") }
-        return settings.launcherFeatures[selectedLauncher].guide ?? .init(id: "", name: "빠른 동작")
+        guard settings.launcherFeatures.indices.contains(selectedLauncher) else { return .init(id: "", name: L("빠른 동작")) }
+        return settings.launcherFeatures[selectedLauncher].guide ?? .init(id: "", name: L("빠른 동작"))
     }
-    var shortcutHeading: String { selectedGuide.id.isEmpty ? "앱을 선택하면 메뉴 단축키가 표시됩니다" : "\(selectedGuide.name) 메뉴 단축키" }
+    var shortcutHeading: String { selectedGuide.id.isEmpty ? L("앱을 선택하면 메뉴 단축키가 표시됩니다") : L("%@ 메뉴 단축키", selectedGuide.name) }
     var visibleShortcuts: [MenuShortcut] { Array(shortcuts.dropFirst(shortcutPage * 4).prefix(4)) }
 
     func refresh(screen: NSScreen?) {
@@ -119,8 +128,8 @@ final class DeckModel {
         volume = audio.volume ?? 0; muted = audio.muted ?? false
         favorites = settings.launcherFeatures.map { feature in
             let url = feature.appURL
-            let subtitle = feature.kind == .app ? (url == nil ? "설치되지 않음" : "탭하여 열기") : (feature.kind == .empty ? "설정에서 기능 추가" : "탭하여 실행")
-            return AppItem(id: feature.value, name: feature.name, icon: feature.icon, url: url, subtitle: subtitle)
+            let subtitle = feature.kind == .app ? (url == nil ? L("설치되지 않음") : L("탭하여 열기")) : (feature.kind == .empty ? L("설정에서 기능 추가") : L("탭하여 실행"))
+            return AppItem(id: feature.value, name: feature.displayName, icon: feature.icon, url: url, subtitle: subtitle)
         }
         if page == 1 { loadShortcuts() }
     }
@@ -154,13 +163,13 @@ final class DeckModel {
         case .brightness where brightnessAvailable:
             let next = min(1, max(0, brightness + delta))
             if system.setBrightness(next) { haptics.adjustment(from: brightness, to: next); brightness = next }
-            else { notify("이 화면의 밝기를 변경하지 못했어요") }
+            else { notify(L("이 화면의 밝기를 변경하지 못했어요")) }
         case .mediaSeek:
             if let progress = mediaProgress, progress.canSeek { queueSeek((pendingSeek ?? progress.fraction) + delta) }
         case .volume where volumeAvailable:
             let next = min(1, max(0, volume + delta))
             if system.setVolume(next) { haptics.adjustment(from: volume, to: next); volume = next }
-            else { notify("이 출력 장치의 볼륨을 변경하지 못했어요") }
+            else { notify(L("이 출력 장치의 볼륨을 변경하지 못했어요")) }
         default: break
         }
     }
@@ -169,7 +178,7 @@ final class DeckModel {
         switch control {
         case .mute:
             if muteAvailable && system.setMute(!muted) { muted.toggle() }
-            else { notify("이 출력 장치는 음소거를 지원하지 않아요") }
+            else { notify(L("이 출력 장치는 음소거를 지원하지 않아요")) }
         case .previous: mediaCommand(5)
         case .playback: mediaCommand(2)
         case .next: mediaCommand(4)
@@ -177,7 +186,7 @@ final class DeckModel {
         case .forwardSkip: mediaCommand(13)
         case .systemMedia:
             onClose?()
-            Task { if !(await system.openSystemMedia()) { notify("제어 센터를 열지 못했어요. 손쉬운 사용 권한을 확인해 주세요") } }
+            Task { if !(await system.openSystemMedia()) { notify(L("제어 센터를 열지 못했어요. 손쉬운 사용 권한을 확인해 주세요")) } }
         case .previousPage: changePage(page - 1)
         case .nextPage: changePage(page + 1)
         case .feature(let index):
@@ -191,7 +200,7 @@ final class DeckModel {
             pendingFeature = nil
             pendingShortcut = (selectedGuide, visibleShortcuts[index])
             if preview { completeSession() }
-            else { notify("⌥ 놓으면 \(selectedGuide.name)에 실행 · Esc로 취소") }
+            else { notify(L("⌥ 놓으면 %@에 실행 · Esc로 취소", selectedGuide.name)) }
         case .moreShortcuts:
             shortcutPage = (shortcutPage + 1) % max(1, (shortcuts.count + 3) / 4)
         case .refreshShortcuts: loadShortcuts(force: true)
@@ -205,7 +214,7 @@ final class DeckModel {
         guard feature.kind != .empty else { return }
         pendingFeature = feature
         if preview { completeSession(); onClose?() }
-        else { notify("⌥ 놓으면 \(feature.name) 실행 · Esc로 취소") }
+        else { notify(L("⌥ 놓으면 %@ 실행 · Esc로 취소", feature.displayName)) }
     }
     func completeSession() {
         if let feature = pendingFeature {
@@ -228,18 +237,18 @@ final class DeckModel {
         let ticket = od_shortcut_advance()
         if !background { shortcutPage = 0 }
         let guide = selectedGuide
-        guard !guide.id.isEmpty else { shortcutTask = nil; shortcuts = []; shortcutStatus = "앱 실행이 할당된 칸을 가리키면 메뉴 단축키가 표시돼요"; return }
-        guard AXIsProcessTrusted() else { shortcutTask = nil; shortcuts = []; shortcutStatus = "손쉬운 사용을 허용하면 실제 메뉴 단축키를 읽어요"; return }
+        guard !guide.id.isEmpty else { shortcutTask = nil; shortcuts = []; shortcutStatus = L("앱 실행이 할당된 칸을 가리키면 메뉴 단축키가 표시돼요"); return }
+        guard AXIsProcessTrusted() else { shortcutTask = nil; shortcuts = []; shortcutStatus = L("손쉬운 사용을 허용하면 실제 메뉴 단축키를 읽어요"); return }
         guard let app = runningApplication(for: guide) else {
-            shortcutTask = nil; shortcuts = []; shortcutStatus = "\(guide.name)을 열면 실제 메뉴 단축키를 읽어요"; return
+            shortcutTask = nil; shortcuts = []; shortcutStatus = L("%@을 열면 실제 메뉴 단축키를 읽어요", guide.name); return
         }
         let pid = app.processIdentifier
         let name = app.localizedName ?? guide.name
         let now = ProcessInfo.processInfo.systemUptime
         if !force, let cached = shortcutCache[guide.id], cached.pid == pid, now - cached.time < 15 {
-            shortcutTask = nil; shortcuts = cached.items; shortcutStatus = cached.items.isEmpty ? "앱이 메뉴 단축키를 제공하지 않아요" : ""; return
+            shortcutTask = nil; shortcuts = cached.items; shortcutStatus = cached.items.isEmpty ? L("앱이 메뉴 단축키를 제공하지 않아요") : ""; return
         }
-        if !background { shortcuts = []; shortcutStatus = "\(guide.name)의 메뉴를 읽는 중…" }
+        if !background { shortcuts = []; shortcutStatus = L("%@의 메뉴를 읽는 중…", guide.name) }
         shortcutTask = Task {
             // Delay work briefly while the finger travels across launcher tiles.
             try? await Task.sleep(for: .milliseconds(120))
@@ -252,7 +261,7 @@ final class DeckModel {
             shortcutCache[guide.id] = (pid, ProcessInfo.processInfo.systemUptime, items)
             shortcuts = items
             shortcutPage = min(shortcutPage, max(0, (items.count - 1) / 4))
-            shortcutStatus = items.isEmpty ? "앱이 메뉴 단축키를 제공하지 않아요" : ""
+            shortcutStatus = items.isEmpty ? L("앱이 메뉴 단축키를 제공하지 않아요") : ""
         }
     }
     func refreshMediaProgress() {
@@ -290,7 +299,7 @@ final class DeckModel {
             let success = await Task.detached(priority: .userInitiated) { MediaProgressReader.seek(progress, fraction: target) }.value
             guard !Task.isCancelled else { return }
             pendingSeek = nil
-            if !success { notify("음악 앱이 재생 위치 변경을 허용하지 않았어요") }
+            if !success { notify(L("음악 앱이 재생 위치 변경을 허용하지 않았어요")) }
             lastProgressRead = 0
         }
     }
@@ -310,7 +319,7 @@ final class DeckModel {
     func readPreviewShortcuts() {
         guard let app = runningApplication(for: selectedGuide) else { return }
         shortcuts = MenuShortcutReader.read(pid: app.processIdentifier, applicationName: app.localizedName ?? selectedGuide.name)
-        shortcutStatus = shortcuts.isEmpty ? "앱이 메뉴 단축키를 제공하지 않아요" : ""
+        shortcutStatus = shortcuts.isEmpty ? L("앱이 메뉴 단축키를 제공하지 않아요") : ""
     }
     func notify(_ text: String) {
         message = text; messageGeneration += 1
@@ -327,24 +336,24 @@ final class DeckModel {
     }
     var focusedTitle: String {
         switch focused {
-        case .brightness: "밝기 · 위아래로 조절"
-        case .volume: "볼륨 · 위아래로 조절"
-        case .mediaSeek: "재생 위치 · 위아래로 탐색"
-        case .mute: "음소거 · 탭"
-        case .previous: "이전 · 탭"
-        case .playback: "재생 / 일시정지 · 탭"
-        case .next: "다음 · 탭"
-        case .backwardSkip: "15초 뒤로 · 탭"
-        case .forwardSkip: "15초 앞으로 · 탭"
-        case .systemMedia: "제어 센터 재생바 · 탭"
-        case .feature(let index): settings.mediaFeatures.indices.contains(index) ? "\(settings.mediaFeatures[index].name) · 탭" : "기능"
-        case .launch(let index): favorites.indices.contains(index) ? "\(favorites[index].name) · 탭" : "빠른 동작"
-        case .shortcut(let index): visibleShortcuts.indices.contains(index) ? "\(selectedGuide.name) · \(visibleShortcuts[index].title)" : "단축키"
-        case .moreShortcuts: "다른 단축키 보기 · 탭"
-        case .refreshShortcuts: "앱 메뉴 새로고침 · 탭"
-        case .previousPage: "이전 페이지 · 탭"
-        case .nextPage: "다음 페이지 · 탭"
-        case nil: page == 0 ? "좌우로 찾아서 위아래로 조절 · 옆으로 밀어 항목 변경" : "앱을 가리키면 단축키 표시 · 눌러서 실행"
+        case .brightness: L("밝기 · 위아래로 조절")
+        case .volume: L("볼륨 · 위아래로 조절")
+        case .mediaSeek: L("재생 위치 · 위아래로 탐색")
+        case .mute: L("음소거 · 탭")
+        case .previous: L("이전 · 탭")
+        case .playback: L("재생 / 일시정지 · 탭")
+        case .next: L("다음 · 탭")
+        case .backwardSkip: L("15초 뒤로 · 탭")
+        case .forwardSkip: L("15초 앞으로 · 탭")
+        case .systemMedia: L("제어 센터 재생바 · 탭")
+        case .feature(let index): settings.mediaFeatures.indices.contains(index) ? L("%@ · 탭", settings.mediaFeatures[index].displayName) : L("기능")
+        case .launch(let index): favorites.indices.contains(index) ? L("%@ · 탭", favorites[index].name) : L("빠른 동작")
+        case .shortcut(let index): visibleShortcuts.indices.contains(index) ? "\(selectedGuide.name) · \(visibleShortcuts[index].title)" : L("단축키")
+        case .moreShortcuts: L("다른 단축키 보기 · 탭")
+        case .refreshShortcuts: L("앱 메뉴 새로고침 · 탭")
+        case .previousPage: L("이전 페이지 · 탭")
+        case .nextPage: L("다음 페이지 · 탭")
+        case nil: page == 0 ? L("좌우로 찾아서 위아래로 조절 · 옆으로 밀어 항목 변경") : L("앱을 가리키면 단축키 표시 · 눌러서 실행")
         }
     }
 }
